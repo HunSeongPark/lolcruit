@@ -3,9 +3,7 @@ package com.hunseong.lolcruit.domain.post;
 import com.hunseong.lolcruit.domain.BaseTimeEntity;
 import com.hunseong.lolcruit.domain.comment.Comment;
 import com.hunseong.lolcruit.domain.user.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +13,8 @@ import java.util.List;
  * Created by Hunseong on 2022/05/18
  */
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Post extends BaseTimeEntity {
