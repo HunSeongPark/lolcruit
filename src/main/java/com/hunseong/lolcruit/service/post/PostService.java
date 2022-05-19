@@ -4,6 +4,7 @@ import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.post.PostRepository;
 import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,7 @@ public class PostService {
 
     // 게시글 리스트
     public List<PostResponseDto> findAll() {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllByOrderByIdDesc();
         return posts.stream().map(PostResponseDto::fromEntity).toList();
     }
 
