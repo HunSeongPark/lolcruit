@@ -87,26 +87,15 @@
     <!-- Paging -->
   <div class="paging">
     <ul class="pagination">
-      <li class="page-item disabled">
-        <a class="page-link" href="#">&laquo;</a>
+      <li class="page-item" th:classappend="${hasPrev ? _ : 'disabled'}">
+        <a th:href="@{/(page=${(currentBlock - 1) * 5})}" class="page-link">«</a>
       </li>
-      <li class="page-item active">
-        <a class="page-link" href="#">1</a>
+      <li th:each="page : ${#numbers.sequence(startPage, endPage - 1)}" class="page-item"
+          th:classappend="${currentPage == page ? 'active' : _}">
+        <a th:text="${page + 1}" class="page-link" th:href="@{/(page=${page})}"></a>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="#">2</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">3</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">4</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">5</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">&raquo;</a>
+      <li class="page-item" th:classappend="${hasNext ? _ : 'disabled'}">
+        <a th:href="@{/(page=${(currentBlock + 1) * 5})}" class="page-link">»</a>
       </li>
     </ul>
   </div>
