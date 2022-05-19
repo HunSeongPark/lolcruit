@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.List;
+import static com.hunseong.lolcruit.constants.PagingConst.BLOCK_PAGE_COUNT;
 
 /**
  * Created by Hunseong on 2022/05/19
@@ -33,23 +33,24 @@ public class PostController {
         // 0~4 페이지 : block 0
         // 5~9 페이지 : block 1
         // ...
-        int currentBlock = posts.getNumber() / 5;
+        int currentBlock = posts.getNumber() / BLOCK_PAGE_COUNT;
 
         // 현재 block에 5페이지를 채울 수 있는지의 여부에 따른 endPage 분기
-        int endPage = (currentBlock + 1) * 5 < posts.getTotalPages() ?
-                (currentBlock * 5) + 5 : posts.getTotalPages();
+        int endPage = (currentBlock + 1) * BLOCK_PAGE_COUNT < posts.getTotalPages() ?
+                (currentBlock + 1) * BLOCK_PAGE_COUNT - 1 : posts.getTotalPages() - 1;
 
         boolean hasPrev = currentBlock != 0;
-
-        boolean hasNext = (currentBlock + 1) * 5 < posts.getTotalPages();
+        boolean hasNext = (currentBlock + 1) * BLOCK_PAGE_COUNT < posts.getTotalPages();
 
         model.addAttribute("posts", posts.getContent());
-        model.addAttribute("startPage", currentBlock * 5);
+        model.addAttribute("startPage", currentBlock * BLOCK_PAGE_COUNT);
         model.addAttribute("currentPage", posts.getNumber());
         model.addAttribute("currentBlock", currentBlock);
         model.addAttribute("hasPrev", hasPrev);
         model.addAttribute("hasNext", hasNext);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("first", 0);
+        model.addAttribute("last", posts.getTotalPages() - 1);
         return "index";
     }
 }
