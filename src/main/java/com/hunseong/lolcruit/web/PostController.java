@@ -4,6 +4,7 @@ import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.service.post.PostService;
 import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import static com.hunseong.lolcruit.constants.PagingConst.BLOCK_PAGE_COUNT;
 /**
  * Created by Hunseong on 2022/05/19
  */
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class PostController {
@@ -24,11 +26,10 @@ public class PostController {
 
     @GetMapping("/")
     public String index(
-            @RequestParam(name = "pos", required = false) Position position,
+            @RequestParam(value = "pos", required = false) Position position,
             Pageable pageable,
             Model model
     ) {
-
         Page<PostResponseDto> posts = postService.findAll(pageable, position);
 
         // 임의로 URL을 조작하여 페이지 범위를 벗어나는 index에 접근할 경우 throw
@@ -58,6 +59,9 @@ public class PostController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("first", 0);
         model.addAttribute("last", posts.getTotalPages() - 1);
+        model.addAttribute("position", position);
+
         return "index";
     }
+
 }

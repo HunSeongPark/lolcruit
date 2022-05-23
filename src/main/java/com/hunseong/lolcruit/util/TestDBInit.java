@@ -35,7 +35,7 @@ public class TestDBInit {
         @Transactional
         public void init() {
 
-            for (int i = 0; i < 1500; i++) {
+            for (int i = 0; i < 500; i++) {
                 Position[] pos = Position.values();
                 int rand = new Random().nextInt(5);
 
