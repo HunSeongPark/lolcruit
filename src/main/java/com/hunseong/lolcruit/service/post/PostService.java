@@ -20,16 +20,31 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Page<PostResponseDto> findAll(Pageable pageable, Position position) {
+    public Page<PostResponseDto> findAll(Pageable pageable, Position position, String keyword) {
 
         // ALL
-        if (position == null) {
+        if (position == null && (keyword == null || keyword.isBlank())) {
             Page<Post> posts = postRepository.findAllByOrderByIdDesc(pageable);
             return posts.map(PostResponseDto::fromEntity);
         }
 
-        Page<Post> posts = postRepository.findAllByPositionOrderByIdDesc(pageable, position);
+        // ALL && Search
+        if (position == null && !keyword.isBlank()) {
+            Page<Post> posts = postRepository.findAllByTitleContainingOrderByIdDesc(pageable, keyword);
+            return posts.map(PostResponseDto::fromEntity);
+        }
+
+        // position
+        if (position != null && (keyword == null || keyword.isBlank())) {
+            Page<Post> posts = postRepository.findAllByPositionOrderByIdDesc(pageable, position);
+            return posts.map(PostResponseDto::fromEntity);
+        }
+
+        // position && Search
+        Page<Post> posts = postRepository.findAllByPositionAndKeyword(pageable, position, keyword);
         return posts.map(PostResponseDto::fromEntity);
+
+
     }
 
 }

@@ -27,14 +27,15 @@ public class PostController {
     @GetMapping("/")
     public String index(
             @RequestParam(value = "pos", required = false) Position position,
+            @RequestParam(value = "keyword", required = false) String keyword,
             Pageable pageable,
             Model model
     ) {
-        Page<PostResponseDto> posts = postService.findAll(pageable, position);
+        Page<PostResponseDto> posts = postService.findAll(pageable, position, keyword);
 
         // 임의로 URL을 조작하여 페이지 범위를 벗어나는 index에 접근할 경우 throw
         // TODO Exception Handling
-        if (pageable.getPageNumber() >= posts.getTotalPages()) {
+        if (pageable.getPageNumber() >= posts.getTotalPages() && posts.getTotalElements() != 0) {
             throw new RuntimeException("page index exception");
         }
 
@@ -43,9 +44,23 @@ public class PostController {
         // ...
         int currentBlock = posts.getNumber() / BLOCK_PAGE_COUNT;
 
-        // 현재 block에 5페이지를 채울 수 있는지의 여부에 따른 endPage 분기
-        int endPage = (currentBlock + 1) * BLOCK_PAGE_COUNT < posts.getTotalPages() ?
-                (currentBlock + 1) * BLOCK_PAGE_COUNT - 1 : posts.getTotalPages() - 1;
+        // 현재 block에 5페이지를 채울 수 있는지의 여부에 따른 현재 block 마지막 페이지 분기
+        int endPage;
+        if ((currentBlock + 1) * BLOCK_PAGE_COUNT < posts.getTotalPages()) {
+           endPage = (currentBlock + 1) * BLOCK_PAGE_COUNT - 1;
+        } else if (posts.getTotalElements() == 0) {
+            endPage = 0;
+        } else {
+           endPage = posts.getTotalPages() - 1;
+        }
+
+        // 가장 마지막 페이지 index
+        int lastPage;
+        if (posts.getTotalElements() == 0) {
+            lastPage = 0;
+        } else {
+            lastPage = posts.getTotalPages() - 1;
+        }
 
         boolean hasPrev = currentBlock != 0;
         boolean hasNext = (currentBlock + 1) * BLOCK_PAGE_COUNT < posts.getTotalPages();
@@ -58,8 +73,9 @@ public class PostController {
         model.addAttribute("hasNext", hasNext);
         model.addAttribute("endPage", endPage);
         model.addAttribute("first", 0);
-        model.addAttribute("last", posts.getTotalPages() - 1);
+        model.addAttribute("last", lastPage);
         model.addAttribute("position", position);
+        model.addAttribute("keyword", keyword);
 
         return "index";
     }
