@@ -16,16 +16,16 @@
     </div>
 
     <!-- welcome user div -->
-    <div class="login-div d-inline">
+    <div class="login-div d-inline visually-hidden">
       <span class="welcome"><b>박훈성</b> 님 반가워요!</span>
       <button type="button" class="btn btn-danger btn-logout">로그아웃</button>
       <button type="button" class="btn btn-primary btn-setting">정보수정</button>
     </div>
 
-    <div class="guest-div d-inline visually-hidden">
-      <span class="welcome"><a href="/login">로그인</a> 후 이용해주세요.</span>
-      <button type="button" class="btn btn-info btn-login">로그인</button>
-      <button type="button" class="btn btn-primary btn-join">회원가입</button>
+    <div class="guest-div d-inline ">
+      <span class="welcome"><a href="/auth/login">로그인</a> 후 이용해주세요.</span>
+      <button onclick="location.href='/auth/login';" type="button" class="btn btn-info btn-login">로그인</button>
+      <button onclick="location.href='/auth/join';" type="button" class="btn btn-primary btn-join">회원가입</button>
     </div>
     <!-- /welcome user div -->
 

@@ -52,7 +52,7 @@ class PostServiceTest {
         PageRequest pageable = PageRequest.of(0, 20);
 
         // when
-        Page<PostResponseDto> result = postService.findAll(pageable, null);
+        Page<PostResponseDto> result = postService.findAll(pageable, null, null);
 
         // then
         assertThat(result.getTotalPages()).isEqualTo(1);
@@ -90,7 +90,7 @@ class PostServiceTest {
         PageRequest pageable = PageRequest.of(0, 20);
 
         // when
-        Page<PostResponseDto> result = postService.findAll(pageable, Position.TOP);
+        Page<PostResponseDto> result = postService.findAll(pageable, Position.TOP, null);
 
         // then
         assertThat(result.getTotalPages()).isEqualTo(1);

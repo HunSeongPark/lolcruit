@@ -2,12 +2,11 @@ package com.hunseong.lolcruit.domain.user;
 
 import com.hunseong.lolcruit.domain.BaseTimeEntity;
 import com.hunseong.lolcruit.domain.post.Post;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,4 +35,13 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
+
+    @Builder
+    public User(String username, String password, String nickname, String email) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.email = email;
+        this.role = Role.USER;
+    }
 }

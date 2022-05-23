@@ -82,3 +82,12 @@
   text-align: center;
   line-height: 28px;
 }
+
+h1 {
+  margin: 60px 100px 30px;
+}
+
+.form-err {
+  border-color: red;
+  color: red;
+}
