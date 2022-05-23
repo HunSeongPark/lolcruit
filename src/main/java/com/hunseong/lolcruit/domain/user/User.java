@@ -31,6 +31,9 @@ public class User extends BaseTimeEntity {
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 }

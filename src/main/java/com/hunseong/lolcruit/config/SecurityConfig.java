@@ -1,5 +1,6 @@
 package com.hunseong.lolcruit.config;
 
+import com.hunseong.lolcruit.domain.user.Role;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,8 +18,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/api/posts/**").authenticated()
-                .antMatchers("/posts/add/**").authenticated()
+                .antMatchers("/api/posts/**").hasRole(Role.USER.name())
+                .antMatchers("/posts/add/**").hasRole(Role.USER.name())
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
