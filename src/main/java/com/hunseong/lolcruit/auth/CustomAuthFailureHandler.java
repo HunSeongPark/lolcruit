@@ -1,11 +1,10 @@
 package com.hunseong.lolcruit.auth;
 
-import com.hunseong.lolcruit.constants.LoginErrorMessageConst;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -13,13 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.hunseong.lolcruit.constants.LoginErrorMessageConst.*;
+import static com.hunseong.lolcruit.constants.LoginErrorCode.*;
 
 /**
  * Created by Hunseong on 2022/05/24
  */
 @Component
-public class CustomAuthFailureHandler implements AuthenticationFailureHandler {
+public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(
@@ -28,21 +27,23 @@ public class CustomAuthFailureHandler implements AuthenticationFailureHandler {
             AuthenticationException exception
     ) throws IOException, ServletException {
 
-        String redirectUrl = "/auth/login?error=true";
-        String msg;
+        String redirectUrl = "/auth/login?error=true&code=";
+        int code;
 
-        // 비밀번호 불일치
-        if (exception instanceof BadCredentialsException) {
-            msg = INVALID_PASSWORD;
+
+        if (exception instanceof UsernameNotFoundException) {
+            code = USER_NOT_FOUND.getCode();
         } else if (exception instanceof InternalAuthenticationServiceException) {
-            msg = INTERNAL_ERROR;
-        } else if (exception instanceof UsernameNotFoundException) {
-            msg = USER_NOT_FOUND;
+            code = INTERNAL_ERROR.getCode();
+        } else if (exception instanceof BadCredentialsException) {
+            code = INVALID_ID_PASSWORD.getCode();
         } else {
-            msg = ELSE_ERROR;
+            code = ELSE_ERROR.getCode();
         }
 
-        request.setAttribute("errorMessage", msg);
-        request.getRequestDispatcher(redirectUrl).forward(request, response);
+        setDefaultFailureUrl(redirectUrl + code);
+        super.onAuthenticationFailure(request, response, exception);
     }
+
+
 }

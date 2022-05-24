@@ -1,6 +1,8 @@
 package com.hunseong.lolcruit.web;
 
+import com.hunseong.lolcruit.constants.LoginErrorCode;
 import com.hunseong.lolcruit.service.user.UserService;
+import com.hunseong.lolcruit.web.dto.user.LoginRequestDto;
 import com.hunseong.lolcruit.web.dto.user.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 /**
  * Created by Hunseong on 2022/05/23
@@ -64,12 +67,22 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginForm(
-            @RequestParam("error") boolean isError,
-            HttpServletRequest request,
+            @ModelAttribute("user") LoginRequestDto loginRequestDto,
+            @RequestParam(value = "error", required = false) Boolean isError,
+            @RequestParam(value = "code", required = false) Integer code,
             Model model) {
 
-        if (isError) {
-            model.addAttribute("errorMessage", request.getAttribute("errorMessage"));
+        if (isError != null) {
+            LoginErrorCode[] errors = LoginErrorCode.values();
+
+            // TODO : EXception handling
+            LoginErrorCode loginErrorCode = Arrays.stream(errors)
+                    .filter(e -> e.getCode() == code)
+                    .findFirst()
+                    .orElseThrow(RuntimeException::new);
+
+            model.addAttribute("isError", isError);
+            model.addAttribute("errorMessage", loginErrorCode.getMessage());
         }
         return "auth/loginForm";
     }

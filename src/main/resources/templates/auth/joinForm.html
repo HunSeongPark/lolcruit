@@ -4,8 +4,9 @@
 <body>
 <section class="container">
     <h1 class="text-center">회원가입</h1>
-    <form action="" method="POST" style="margin-left: 30%; margin-right: 30%; margin-bottom: 100px" th:object="${user}">
+    <form th:action="@{/auth/join}" method="POST" style="margin-left: 30%; margin-right: 30%; margin-bottom: 100px" th:object="${user}">
         <fieldset>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <div class="form-group">
                 <label for="username" class="form-label mt-2">아이디</label>
                 <input type="text" class="form-control" id="username"

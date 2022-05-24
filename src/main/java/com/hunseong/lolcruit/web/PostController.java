@@ -1,8 +1,10 @@
 package com.hunseong.lolcruit.web;
 
+import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.service.post.PostService;
 import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
+import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,9 +30,14 @@ public class PostController {
     public String index(
             @RequestParam(value = "pos", required = false) Position position,
             @RequestParam(value = "keyword", required = false) String keyword,
+            @LoginUser SessionUser user,
             Pageable pageable,
             Model model
     ) {
+
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
         Page<PostResponseDto> posts = postService.findAll(pageable, position, keyword);
 
         // 임의로 URL을 조작하여 페이지 범위를 벗어나는 index에 접근할 경우 throw
