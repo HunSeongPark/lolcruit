@@ -64,12 +64,12 @@ public class PostService {
         return postRepository.save(post).getId();
     }
 
-    @Transactional(readOnly = true)
-    public PostReadDto findById(Long id) {
+    public PostReadDto findByIdForRead(Long id) {
         // TODO
         Post post = postRepository.findByIdFetchComments(id)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
+        post.upView();
         return PostReadDto.fromEntity(post);
     }
 

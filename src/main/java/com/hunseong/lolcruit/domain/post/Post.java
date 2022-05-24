@@ -49,4 +49,8 @@ public class Post extends BaseTimeEntity {
         this.content = postEditDto.getContent();
         this.position = postEditDto.getPosition();
     }
+
+    public void upView() {
+        this.view ++;
+    }
 }

@@ -121,7 +121,7 @@ public class PostController {
             @PathVariable Long id,
             Model model
     ) {
-        PostReadDto post = postService.findById(id);
+        PostReadDto post = postService.findByIdForRead(id);
         model.addAttribute("post", post);
         model.addAttribute("user", user);
         return "post/post";
