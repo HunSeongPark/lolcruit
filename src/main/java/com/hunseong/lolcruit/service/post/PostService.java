@@ -5,9 +5,10 @@ import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.post.PostRepository;
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
+import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
-import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
+import com.hunseong.lolcruit.web.dto.post.PostReadDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,19 +16,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 /**
  * Created by Hunseong on 2022/05/19
  */
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public Page<PostIndexResponseDto> findAll(Pageable pageable, Position position, String keyword) {
 
         // ALL
@@ -55,7 +55,6 @@ public class PostService {
 
     }
 
-    @Transactional
     public Long add(PostRequestDto postRequestDto, SessionUser user) {
         // TODO
         User writeUser = userRepository.findByUsername(user.getUsername())
@@ -65,11 +64,37 @@ public class PostService {
         return postRepository.save(post).getId();
     }
 
-    public PostResponseDto findById(Long id) {
+    @Transactional(readOnly = true)
+    public PostReadDto findById(Long id) {
         // TODO
         Post post = postRepository.findByIdFetchComments(id)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
-        return PostResponseDto.fromEntity(post);
+        return PostReadDto.fromEntity(post);
+    }
+
+    public PostEditDto findByIdForEdit(Long id) {
+        // TODO
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+
+        return PostEditDto.fromEntity(post);
+    }
+
+    public void update(PostEditDto postEditDto, Long id) {
+        // TODO
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+
+        post.update(postEditDto);
+
+    }
+
+    public Long delete(Long id) {
+        // TODO
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+        postRepository.delete(post);
+        return post.getId();
     }
 }

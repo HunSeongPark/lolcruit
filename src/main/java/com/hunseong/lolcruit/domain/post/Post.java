@@ -3,6 +3,7 @@ package com.hunseong.lolcruit.domain.post;
 import com.hunseong.lolcruit.domain.BaseTimeEntity;
 import com.hunseong.lolcruit.domain.comment.Comment;
 import com.hunseong.lolcruit.domain.user.User;
+import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,4 +42,11 @@ public class Post extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    // Update Logic
+    public void update(PostEditDto postEditDto) {
+        this.title = postEditDto.getTitle();
+        this.content = postEditDto.getContent();
+        this.position = postEditDto.getPosition();
+    }
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{template/layout :: layout(~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<section class="container">
+    <h1 class="text-center">글 수정</h1>
+    <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="POST" th:object="${post}">
+        <fieldset>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <div class="form-group row" style="width: 60%">
+                <label for="title" class=" col-form-label">제목</label>
+                <div class="col-sm-10">
+                    <input type="text" th:field="*{title}" th:errorclass="form-err" class="form-control"
+                           name="title" id="title" placeholder="제목을 입력하세요">
+                </div>
+                <small th:errors="*{title}" class="form-text form-err" >Err1</small>
+            </div>
+            <div class="form-group row" style="width: 30%">
+                <label for="position" class=" col-form-label">포지션</label>
+                <div id="position" class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" value="TOP" th:field="*{position}" class="btn-check" name="position" id="btnradio1" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio1"><img src="/img/top.png" class="position-img"></label>
+                    <input type="radio" value="JUG" th:field="*{position}" class="btn-check" name="position" id="btnradio2" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio2"><img src="/img/jug.png" class="position-img"></label>
+                    <input type="radio" value="MID" th:field="*{position}" class="btn-check" name="position" id="btnradio3" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio3"><img src="/img/mid.png" class="position-img"></label>
+                    <input type="radio" value="ADC" th:field="*{position}" class="btn-check" name="position" id="btnradio4" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio4"><img src="/img/adc.png" class="position-img"></label>
+                    <input type="radio" value="SUP" th:field="*{position}" class="btn-check" name="position" id="btnradio5" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio5"><img src="/img/sup.png" class="position-img"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="content" class="form-label mt-4">내용</label>
+                <br><small th:errors="*{content}" class="form-text form-err" >Err1</small>
+                <textarea class="form-control" th:field="*{content}" th:errorclass="form-err"
+                          name="content" id="content" rows="20" placeholder="내용을 입력하세요"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px; margin-bottom: 50px">수정</button>
+            <button onclick="history.back();" type="submit" class="btn btn-secondary" style="margin-top: 10px; margin-bottom: 50px">취소</button>
+        </fieldset>
+    </form>
+</section>
+</body>
+</html>

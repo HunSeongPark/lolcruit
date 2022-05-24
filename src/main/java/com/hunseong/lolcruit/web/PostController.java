@@ -3,9 +3,10 @@ package com.hunseong.lolcruit.web;
 import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.service.post.PostService;
+import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
-import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
+import com.hunseong.lolcruit.web.dto.post.PostReadDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -120,10 +121,34 @@ public class PostController {
             @PathVariable Long id,
             Model model
     ) {
-        PostResponseDto post = postService.findById(id);
+        PostReadDto post = postService.findById(id);
         model.addAttribute("post", post);
         model.addAttribute("user", user);
         return "post/post";
+    }
+
+    @GetMapping("/posts/{id}/edit")
+    public String editForm(
+            @PathVariable Long id,
+            Model model
+    ) {
+        PostEditDto post = postService.findByIdForEdit(id);
+        model.addAttribute("post", post);
+        return "post/edit";
+    }
+
+    @PostMapping("/posts/{id}/edit")
+    public String edit(
+            @Validated @ModelAttribute("post") PostEditDto postEditDto,
+            BindingResult bindingResult,
+            @PathVariable Long id
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "post/edit";
+        }
+
+        postService.update(postEditDto, id);
+        return "redirect:/posts/" + id;
     }
 
 }

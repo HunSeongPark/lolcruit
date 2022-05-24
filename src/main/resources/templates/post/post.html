@@ -3,7 +3,12 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <section class="container">
-    <div class="card border-primary mb-3" style="margin-top: 6%">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="hidden" id="id" th:value="${post.id}">
+    <div class="text-center banner">
+        <a href="/"><img src="/img/logo.jpeg" class="banner-img"></a>
+    </div>
+    <div class="card border-primary mb-3" style="margin-top: 6%; margin-bottom: 100px">
         <div class="card-header">
             <div style="display: inline">작성자 : <span th:text="${post.writer}"></span></div>
             <div style="display: inline; float: right">작성시간 : <span th:text="${post.createdAt}"></span></div>
@@ -16,10 +21,11 @@
                 <img th:case="ADC" src="/img/adc.png" class="position-img-post-read">
                 <img th:case="SUP" src="/img/sup.png" class="position-img-post-read">
                 <h4 th:text="${post.title}"class="card-title" style="display: inline; line-height: 50px"></h4>
-                <a th:if="${user?.nickname == post.writer}"
-                   href="#" style="margin-left: 30px; margin-right: 20px; color: deepskyblue">수정</a>
-                <a th:if="${user?.nickname == post.writer}"
-                   href="#" style="color: darkred">삭제</a>
+                <button class="btn btn-primary" th:if="${user?.nickname == post.writer}"
+                        th:onclick="'location.href=\''+ @{/posts/{id}/edit(id=${post.id})} + '\''"
+                   style="margin-left: 30px; margin-right: 20px;">수정</button>
+                <button class="btn btn-warning" id="btn-delete" th:if="${user?.nickname == post.writer}">
+                    삭제</button>
             </div>
 
             <p th:text="${post.content}" class="card-text"></p>

@@ -17,8 +17,9 @@ import java.util.List;
  */
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostResponseDto {
+public class PostReadDto {
 
+    private Long id;
     private String title;
     private String content;
     private String writer;
@@ -26,8 +27,9 @@ public class PostResponseDto {
     private String createdAt;
     private List<Comment> comments;
 
-    public static PostResponseDto fromEntity(Post post) {
-        return new PostResponseDto(
+    public static PostReadDto fromEntity(Post post) {
+        return new PostReadDto(
+                post.getId(),
                 post.getTitle(),
                 post.getContent(),
                 post.getWriter(),
