@@ -3,12 +3,8 @@ package com.hunseong.lolcruit.service.post;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.post.PostRepository;
-import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
+import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -52,7 +48,7 @@ class PostServiceTest {
         PageRequest pageable = PageRequest.of(0, 20);
 
         // when
-        Page<PostResponseDto> result = postService.findAll(pageable, null, null);
+        Page<PostIndexResponseDto> result = postService.findAll(pageable, null, null);
 
         // then
         assertThat(result.getTotalPages()).isEqualTo(1);
@@ -90,7 +86,7 @@ class PostServiceTest {
         PageRequest pageable = PageRequest.of(0, 20);
 
         // when
-        Page<PostResponseDto> result = postService.findAll(pageable, Position.TOP, null);
+        Page<PostIndexResponseDto> result = postService.findAll(pageable, Position.TOP, null);
 
         // then
         assertThat(result.getTotalPages()).isEqualTo(1);

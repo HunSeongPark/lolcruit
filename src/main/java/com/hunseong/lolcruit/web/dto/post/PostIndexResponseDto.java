@@ -1,39 +1,39 @@
 package com.hunseong.lolcruit.web.dto.post;
 
-import com.hunseong.lolcruit.domain.comment.Comment;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
- * Created by Hunseong on 2022/05/24
+ * Created by Hunseong on 2022/05/19
  */
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostResponseDto {
+public class PostIndexResponseDto {
 
+    private Long id;
     private String title;
-    private String content;
     private String writer;
     private Position position;
-    private String createdAt;
-    private List<Comment> comments;
+    private int view;
+    private String createdDate;
 
-    public static PostResponseDto fromEntity(Post post) {
-        return new PostResponseDto(
+    public static PostIndexResponseDto fromEntity(Post post) {
+        return new PostIndexResponseDto(
+                post.getId(),
                 post.getTitle(),
-                post.getContent(),
                 post.getWriter(),
                 post.getPosition(),
-                calcCreateDate(post.getCreatedDate()),
-                post.getComments()
+                post.getView(),
+                calcCreateDate(post.getCreatedDate())
         );
     }
 

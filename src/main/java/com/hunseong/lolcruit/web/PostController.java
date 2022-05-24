@@ -3,6 +3,7 @@ package com.hunseong.lolcruit.web;
 import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.service.post.PostService;
+import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
@@ -40,7 +41,7 @@ public class PostController {
         if (user != null) {
             model.addAttribute("user", user);
         }
-        Page<PostResponseDto> posts = postService.findAll(pageable, position, keyword);
+        Page<PostIndexResponseDto> posts = postService.findAll(pageable, position, keyword);
 
         // 임의로 URL을 조작하여 페이지 범위를 벗어나는 index에 접근할 경우 throw
         // TODO Exception Handling
@@ -56,11 +57,11 @@ public class PostController {
         // 현재 block에 5페이지를 채울 수 있는지의 여부에 따른 현재 block 마지막 페이지 분기
         int endPage;
         if ((currentBlock + 1) * BLOCK_PAGE_COUNT < posts.getTotalPages()) {
-           endPage = (currentBlock + 1) * BLOCK_PAGE_COUNT - 1;
+            endPage = (currentBlock + 1) * BLOCK_PAGE_COUNT - 1;
         } else if (posts.getTotalElements() == 0) {
             endPage = 0;
         } else {
-           endPage = posts.getTotalPages() - 1;
+            endPage = posts.getTotalPages() - 1;
         }
 
         // 가장 마지막 페이지 index
@@ -111,6 +112,18 @@ public class PostController {
 
         postService.add(postRequestDto, user);
         return "redirect:/";
+    }
+
+    @GetMapping("posts/{id}")
+    public String read(
+            @LoginUser SessionUser user,
+            @PathVariable Long id,
+            Model model
+    ) {
+        PostResponseDto post = postService.findById(id);
+        model.addAttribute("post", post);
+        model.addAttribute("user", user);
+        return "post/post";
     }
 
 }

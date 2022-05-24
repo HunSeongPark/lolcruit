@@ -65,6 +65,12 @@
   margin-right: 10px;
 }
 
+.position-img-post-read {
+  width: 35px;
+  display: inline;
+  margin-right: 10px;
+}
+
 .btn-write {
   float: right;
 }

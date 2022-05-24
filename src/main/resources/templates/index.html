@@ -65,7 +65,7 @@
             <img th:case="MID" src="/img/mid.png" class="position-img-post">
             <img th:case="ADC" src="/img/adc.png" class="position-img-post">
             <img th:case="SUP" src="/img/sup.png" class="position-img-post">
-            <a href="#" th:text="${post.title}">글 제목</a>
+            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">글 제목</a>
           </td>
           <td th:text="${post.writer}">작성자</td>
           <td th:text="${post.createdDate}">00:00</td>

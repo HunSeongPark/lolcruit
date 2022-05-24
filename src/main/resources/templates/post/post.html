@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{template/layout :: layout(~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<section class="container">
+    <div class="card border-primary mb-3" style="margin-top: 6%">
+        <div class="card-header">
+            <div style="display: inline">작성자 : <span th:text="${post.writer}"></span></div>
+            <div style="display: inline; float: right">작성시간 : <span th:text="${post.createdAt}"></span></div>
+        </div>
+        <div class="card-body">
+            <div th:switch="${post.position.name()}" style="margin-top: 20px; margin-bottom: 50px">
+                <img th:case="TOP" src="/img/top.png" class="position-img-post-read">
+                <img th:case="JUG" src="/img/jug.png" class="position-img-post-read">
+                <img th:case="MID" src="/img/mid.png" class="position-img-post-read">
+                <img th:case="ADC" src="/img/adc.png" class="position-img-post-read">
+                <img th:case="SUP" src="/img/sup.png" class="position-img-post-read">
+                <h4 th:text="${post.title}"class="card-title" style="display: inline; line-height: 50px"></h4>
+                <a th:if="${user?.nickname == post.writer}"
+                   href="#" style="margin-left: 30px; margin-right: 20px; color: deepskyblue">수정</a>
+                <a th:if="${user?.nickname == post.writer}"
+                   href="#" style="color: darkred">삭제</a>
+            </div>
+
+            <p th:text="${post.content}" class="card-text"></p>
+            <p style="margin-top: 30px; color: cadetblue">Comments</p>
+            <hr style="margin-bottom: 20px">
+            <div class="card text-white bg-primary mb-3" style="max-width: 30rem; padding-bottom: 20px">
+                <div class="card-header">Header</div>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div>
+                    <a href="#"
+                       style="display: inline; margin-left: 10px; margin-right: 10px;
+                       color: dimgray">수정</a>
+                    <a href="#" style="display: inline; color: darkred">삭제</a>
+                </div>
+            </div>
+            <div class="card text-white bg-primary mb-3" style="max-width: 30rem; padding-bottom: 20px">
+                <div class="card-header">Header</div>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div>
+                    <a href="#"
+                       style="display: inline; margin-left: 10px; margin-right: 10px;
+                       color: dimgray">수정</a>
+                    <a href="#" style="display: inline; color: darkred">삭제</a>
+                </div>
+            </div>
+            <div class="card text-white bg-primary mb-3" style="max-width: 30rem; padding-bottom: 20px">
+                <div class="card-header">Header</div>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div>
+                    <a href="#"
+                       style="display: inline; margin-left: 10px; margin-right: 10px;
+                       color: dimgray">수정</a>
+                    <a href="#" style="display: inline; color: darkred">삭제</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
