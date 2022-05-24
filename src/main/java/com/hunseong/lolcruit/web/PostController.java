@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static com.hunseong.lolcruit.constants.PagingConst.BLOCK_PAGE_COUNT;
@@ -88,16 +90,25 @@ public class PostController {
     }
 
     @GetMapping("/posts/add")
-    public String addForm() {
+    public String addForm(@ModelAttribute("post") PostRequestDto postRequestDto) {
         return "post/add";
     }
 
     @PostMapping("/posts/add")
-    public String add(PostRequestDto postRequestDto, @LoginUser SessionUser user) {
+    public String add(
+            @Validated @ModelAttribute("post") PostRequestDto postRequestDto,
+            BindingResult bindingResult,
+            @LoginUser SessionUser user) {
+
+        if (bindingResult.hasErrors()) {
+            return "post/add";
+        }
+
         if (user == null) {
             // TODO
             throw new RuntimeException("유저 정보가 없습니다.");
         }
+
         postService.add(postRequestDto, user);
         return "redirect:/";
     }
