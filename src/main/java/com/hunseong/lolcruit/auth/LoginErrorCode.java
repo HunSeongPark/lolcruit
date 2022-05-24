@@ -1,4 +1,4 @@
-package com.hunseong.lolcruit.constants;
+package com.hunseong.lolcruit.auth;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

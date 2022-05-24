@@ -10,11 +10,10 @@ import javax.validation.constraints.Pattern;
  * Created by Hunseong on 2022/05/23
  */
 @Getter
-@Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserRequestDto {
+@AllArgsConstructor
+public class JoinRequestDto {
 
     @NotBlank(message = "아이디를 입력해주세요.")
     @Pattern(regexp = "^[a-z\\d]{3,10}$", message = "아이디는 소문자, 숫자 포함 3~10자리 입니다.")

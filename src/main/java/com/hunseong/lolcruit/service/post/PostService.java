@@ -3,7 +3,11 @@ package com.hunseong.lolcruit.service.post;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.post.PostRepository;
+import com.hunseong.lolcruit.domain.user.User;
+import com.hunseong.lolcruit.domain.user.UserRepository;
+import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
+import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     public Page<PostResponseDto> findAll(Pageable pageable, Position position, String keyword) {
 
@@ -47,4 +52,13 @@ public class PostService {
 
     }
 
+    @Transactional
+    public Long add(PostRequestDto postRequestDto, SessionUser user) {
+        // TODO
+        User writeUser = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+
+        Post post = postRequestDto.toEntity(writeUser);
+        return postRepository.save(post).getId();
+    }
 }

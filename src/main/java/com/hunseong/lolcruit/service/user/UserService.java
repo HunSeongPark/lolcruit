@@ -2,7 +2,7 @@ package com.hunseong.lolcruit.service.user;
 
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
-import com.hunseong.lolcruit.web.dto.user.UserRequestDto;
+import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,8 +39,8 @@ public class UserService {
     }
 
     @Transactional
-    public Long join(UserRequestDto userRequestDto) {
-        userRequestDto.encodePassword(passwordEncoder.encode(userRequestDto.getPassword()));
-        return userRepository.save(userRequestDto.toEntity()).getId();
+    public Long join(JoinRequestDto joinRequestDto) {
+        joinRequestDto.encodePassword(passwordEncoder.encode(joinRequestDto.getPassword()));
+        return userRepository.save(joinRequestDto.toEntity()).getId();
     }
 }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.hunseong.lolcruit.constants.LoginErrorCode.*;
+import static com.hunseong.lolcruit.auth.LoginErrorCode.*;
 
 /**
  * Created by Hunseong on 2022/05/24

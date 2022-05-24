@@ -3,6 +3,7 @@ package com.hunseong.lolcruit.web;
 import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.service.post.PostService;
+import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.post.PostResponseDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import static com.hunseong.lolcruit.constants.PagingConst.BLOCK_PAGE_COUNT;
 
@@ -89,9 +88,18 @@ public class PostController {
     }
 
     @GetMapping("/posts/add")
-    @ResponseBody
-    public String add() {
-        return "hello USER";
+    public String addForm() {
+        return "post/add";
+    }
+
+    @PostMapping("/posts/add")
+    public String add(PostRequestDto postRequestDto, @LoginUser SessionUser user) {
+        if (user == null) {
+            // TODO
+            throw new RuntimeException("유저 정보가 없습니다.");
+        }
+        postService.add(postRequestDto, user);
+        return "redirect:/";
     }
 
 }
