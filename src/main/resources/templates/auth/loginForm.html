@@ -25,7 +25,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                <p th:text="${errorMessage}">Error Message</p>
             </div>
-            <button type="submit" class="btn btn-primary" style="margin-top: 20px">Submit</button>
+            <button type="submit" class="btn btn-primary" style="margin-top: 20px">로그인</button>
+            <button type="button" onclick="window.location='/auth/join';" class="btn btn-secondary"
+                    style="margin-top: 20px">회원가입</button>
+            <button type="button" onclick="window.location='/';" class="btn btn-outline-primary"
+                    style="margin-top: 20px">홈으로</button>
         </fieldset>
     </form>
 </section>

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import static com.hunseong.lolcruit.constants.PagingConst.BLOCK_PAGE_COUNT;
 
@@ -85,6 +86,12 @@ public class PostController {
         model.addAttribute("keyword", keyword);
 
         return "index";
+    }
+
+    @GetMapping("/posts/add")
+    @ResponseBody
+    public String add() {
+        return "hello USER";
     }
 
 }
