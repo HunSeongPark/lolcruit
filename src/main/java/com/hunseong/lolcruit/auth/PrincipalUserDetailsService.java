@@ -26,6 +26,7 @@ public class PrincipalUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("존재하지 않는 사용자입니다. 아이디를 확인하세요."));
 
+        // TODO
         httpSession.setAttribute("user", user);
 
         return new PrincipalUserDetails(user);

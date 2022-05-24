@@ -4,12 +4,12 @@ import com.hunseong.lolcruit.service.user.UserService;
 import com.hunseong.lolcruit.web.dto.user.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by Hunseong on 2022/05/23
@@ -63,7 +63,14 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(
+            @RequestParam("error") boolean isError,
+            HttpServletRequest request,
+            Model model) {
+
+        if (isError) {
+            model.addAttribute("errorMessage", request.getAttribute("errorMessage"));
+        }
         return "auth/loginForm";
     }
 }
