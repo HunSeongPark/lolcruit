@@ -72,7 +72,6 @@ public class UserController {
         if (isError != null) {
             LoginErrorCode[] errors = LoginErrorCode.values();
 
-            // TODO : EXception handling
             LoginErrorCode loginErrorCode = Arrays.stream(errors)
                     .filter(e -> e.getCode() == code)
                     .findFirst()

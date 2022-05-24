@@ -5,6 +5,8 @@ import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.post.PostRepository;
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
+import com.hunseong.lolcruit.exception.CustomException;
+import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
@@ -56,44 +58,39 @@ public class PostService {
     }
 
     public Long add(PostRequestDto postRequestDto, SessionUser user) {
-        // TODO
         User writeUser = userRepository.findByUsername(user.getUsername())
-                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Post post = postRequestDto.toEntity(writeUser);
         return postRepository.save(post).getId();
     }
 
     public PostReadDto findByIdForRead(Long id) {
-        // TODO
         Post post = postRepository.findByIdFetchComments(id)
-                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
         post.upView();
         return PostReadDto.fromEntity(post);
     }
 
     public PostEditDto findByIdForEdit(Long id) {
-        // TODO
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
         return PostEditDto.fromEntity(post);
     }
 
     public void update(PostEditDto postEditDto, Long id) {
-        // TODO
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
         post.update(postEditDto);
 
     }
 
     public Long delete(Long id) {
-        // TODO
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
         postRepository.delete(post);
         return post.getId();
     }

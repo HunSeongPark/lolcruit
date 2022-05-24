@@ -2,6 +2,8 @@ package com.hunseong.lolcruit.web;
 
 import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.domain.post.Position;
+import com.hunseong.lolcruit.exception.CustomException;
+import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.service.post.PostService;
 import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
@@ -45,9 +47,8 @@ public class PostController {
         Page<PostIndexResponseDto> posts = postService.findAll(pageable, position, keyword);
 
         // 임의로 URL을 조작하여 페이지 범위를 벗어나는 index에 접근할 경우 throw
-        // TODO Exception Handling
         if (pageable.getPageNumber() >= posts.getTotalPages() && posts.getTotalElements() != 0) {
-            throw new RuntimeException("page index exception");
+            throw new CustomException(ErrorCode.USER_BAD_REQUEST);
         }
 
         // 0~4 페이지 : block 0
@@ -107,8 +108,7 @@ public class PostController {
         }
 
         if (user == null) {
-            // TODO
-            throw new RuntimeException("유저 정보가 없습니다.");
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
         }
 
         postService.add(postRequestDto, user);

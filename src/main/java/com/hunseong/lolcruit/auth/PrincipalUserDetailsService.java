@@ -2,6 +2,8 @@ package com.hunseong.lolcruit.auth;
 
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
+import com.hunseong.lolcruit.exception.CustomException;
+import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +28,7 @@ public class PrincipalUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException("User Not found"));
+                new CustomException(ErrorCode.USER_NOT_FOUND));
 
         httpSession.setAttribute("user", SessionUser.fromEntity(user));
 
