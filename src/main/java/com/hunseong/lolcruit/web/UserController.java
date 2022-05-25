@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 /**
@@ -67,6 +68,7 @@ public class UserController {
     public String loginForm(
             @RequestParam(value = "error", required = false) Boolean isError,
             @RequestParam(value = "code", required = false) Integer code,
+            HttpServletRequest request,
             Model model) {
 
         if (isError != null) {
@@ -79,6 +81,15 @@ public class UserController {
 
             model.addAttribute("isError", isError);
             model.addAttribute("errorMessage", loginErrorCode.getMessage());
+        }
+
+        /**
+         * 이전 페이지로 되돌아가기 위한 Referer 헤더값을 세션의 prevPage attribute로 저장
+         * uri.contains를 통해 중복 저장되지 않도록 처리
+         */
+        String uri = request.getHeader("Referer");
+        if (!uri.contains("/login")) {
+            request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
         }
         return "auth/loginForm";
     }

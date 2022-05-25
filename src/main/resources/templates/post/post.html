@@ -31,10 +31,11 @@
             <p th:text="${post.content}" class="card-text"></p>
             <p style="margin-top: 30px; color: cadetblue">Comments</p>
             <hr style="margin-bottom: 20px">
-            <div class="card text-white bg-primary mb-3" style="max-width: 30rem; padding-bottom: 20px">
-                <div class="card-header">Header <span style="font-size: 8px">20-01-01</span></div>
+            <div th:each="comment : ${post.comments}" class="card text-white bg-primary mb-3" style="max-width: 30rem; padding-bottom: 20px">
+                <div th:text="|작성자 : ${comment.nickname} |" class="card-header">
+                    <span th:text="${comment.createdDate}" style="font-size: 8px"></span></div>
                 <div class="card-body">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p th:text="${comment.content}" class="card-text"></p>
                 </div>
                 <div>
                     <a href="#"
@@ -43,6 +44,21 @@
                     <a href="#" style="display: inline; color: darkred">삭제</a>
                 </div>
             </div>
+            <hr style="margin-bottom: 20px">
+            <div class="guest-div d-inline" th:if="${user == null}">
+                <span class="welcome"><a href="/auth/login">로그인</a> 후 이용해주세요.</span>
+                <button onclick="location.href='/auth/login';" type="button" class="btn btn-info btn-login">로그인</button>
+                <button onclick="location.href='/auth/join';" type="button" class="btn btn-primary btn-join">회원가입</button>
+            </div>
+            <form th:if="${user != null}">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="exampleTextarea" class="form-label mt-4">댓글 작성</label>
+                        <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px">작성</button>
+                </fieldset>
+            </form>
         </div>
     </div>
 </section>

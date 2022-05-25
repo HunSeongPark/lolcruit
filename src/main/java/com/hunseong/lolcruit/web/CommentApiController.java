@@ -4,7 +4,7 @@ import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.service.CommentService;
-import com.hunseong.lolcruit.web.dto.comment.CommentDto;
+import com.hunseong.lolcruit.web.dto.comment.CommentRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +24,12 @@ public class CommentApiController {
     public ResponseEntity<Long> add(
             @LoginUser SessionUser user,
             @PathVariable Long postId,
-            @RequestBody CommentDto commentDto) {
+            @RequestBody CommentRequestDto commentRequestDto) {
 
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
-        return ResponseEntity.ok(commentService.add(user, postId, commentDto));
+        return ResponseEntity.ok(commentService.add(user, postId, commentRequestDto));
     }
 }

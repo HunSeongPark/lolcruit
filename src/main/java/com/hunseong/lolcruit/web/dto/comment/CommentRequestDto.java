@@ -7,14 +7,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.persistence.*;
-
 /**
  * Created by Hunseong on 2022/05/25
  */
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentDto {
+public class CommentRequestDto {
 
     private String content;
 

@@ -30,6 +30,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             @Param("keyword") String keyword
     );
 
-    @Query("select distinct p from Post p left join fetch p.comments where p.id = :id")
+    @Query("select distinct p from Post p left join fetch p.comments c left join fetch c.user where p.id = :id")
     Optional<Post> findByIdFetchComments(@Param("id") Long id);
 }

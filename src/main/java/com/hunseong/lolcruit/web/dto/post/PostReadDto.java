@@ -3,6 +3,7 @@ package com.hunseong.lolcruit.web.dto.post;
 import com.hunseong.lolcruit.domain.comment.Comment;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;
+import com.hunseong.lolcruit.web.dto.comment.CommentResponseDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,9 +26,9 @@ public class PostReadDto {
     private String writer;
     private Position position;
     private String createdAt;
-    private List<Comment> comments;
+    private List<CommentResponseDto> comments;
 
-    public static PostReadDto fromEntity(Post post) {
+    public static PostReadDto fromEntity(Post post, List<CommentResponseDto> comments) {
         return new PostReadDto(
                 post.getId(),
                 post.getTitle(),
@@ -35,7 +36,7 @@ public class PostReadDto {
                 post.getWriter(),
                 post.getPosition(),
                 calcCreateDate(post.getCreatedDate()),
-                post.getComments()
+                comments
         );
     }
 

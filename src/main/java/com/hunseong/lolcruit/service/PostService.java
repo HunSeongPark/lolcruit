@@ -7,6 +7,7 @@ import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
 import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.exception.ErrorCode;
+import com.hunseong.lolcruit.web.dto.comment.CommentResponseDto;
 import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
@@ -17,6 +18,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Hunseong on 2022/05/19
@@ -69,8 +77,12 @@ public class PostService {
         Post post = postRepository.findByIdFetchComments(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
+        List<CommentResponseDto> comments =
+                post.getComments().stream().map(CommentResponseDto::fromEntity).toList();
+
         post.upView();
-        return PostReadDto.fromEntity(post);
+
+        return PostReadDto.fromEntity(post, comments);
     }
 
     public PostEditDto findByIdForEdit(Long id) {
