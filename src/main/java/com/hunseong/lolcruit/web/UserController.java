@@ -88,7 +88,7 @@ public class UserController {
          * uri.contains를 통해 중복 저장되지 않도록 처리
          */
         String uri = request.getHeader("Referer");
-        if (!uri.contains("/login")) {
+        if (uri != null && !uri.contains("/login")) {
             request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
         }
         return "auth/loginForm";

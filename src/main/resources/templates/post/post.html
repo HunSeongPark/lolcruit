@@ -40,10 +40,11 @@
                     <p th:text="${comment.content}" class="card-text"></p>
                 </div>
                 <div>
-                    <a href="#"
-                       style="display: inline; margin-left: 10px; margin-right: 10px;
-                       color: dimgray">수정</a>
-                    <a href="#" style="display: inline; color: darkred">삭제</a>
+                    <button class="btn btn-primary" th:if="${user?.nickname == comment.nickname}"
+                            th:onclick="'location.href=\''+ @{/posts/{id}/edit(id=${post.id})} + '\''"
+                            style="margin-left: 30px; margin-right: 20px;">수정</button>
+                    <button class="btn btn-warning" id="btn-comment-delete" th:if="${user?.nickname == comment.nickname}">
+                        삭제</button>
                 </div>
             </div>
             <hr style="margin-bottom: 20px">

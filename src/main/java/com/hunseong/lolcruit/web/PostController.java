@@ -130,9 +130,10 @@ public class PostController {
     @GetMapping("/posts/{id}/edit")
     public String editForm(
             @PathVariable Long id,
+            @LoginUser SessionUser user,
             Model model
     ) {
-        PostEditDto post = postService.findByIdForEdit(id);
+        PostEditDto post = postService.findByIdForEdit(id, user);
         model.addAttribute("post", post);
         return "post/edit";
     }
