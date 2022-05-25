@@ -4,6 +4,7 @@ import com.hunseong.lolcruit.domain.BaseTimeEntity;
 import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.user.User;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.util.Lazy;
@@ -31,4 +32,10 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public Comment(String content, User user, Post post) {
+        this.content = content;
+        this.user = user;
+        this.post = post;
+    }
 }

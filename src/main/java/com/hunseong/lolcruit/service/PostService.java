@@ -1,4 +1,4 @@
-package com.hunseong.lolcruit.service.post;
+package com.hunseong.lolcruit.service;
 
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;

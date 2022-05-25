@@ -3,6 +3,7 @@ package com.hunseong.lolcruit.service.post;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.post.PostRepository;
+import com.hunseong.lolcruit.service.PostService;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

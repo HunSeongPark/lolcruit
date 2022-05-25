@@ -1,7 +1,7 @@
 package com.hunseong.lolcruit.web;
 
 import com.hunseong.lolcruit.auth.LoginErrorCode;
-import com.hunseong.lolcruit.service.user.UserService;
+import com.hunseong.lolcruit.service.UserService;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

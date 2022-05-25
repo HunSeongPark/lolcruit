@@ -1,4 +1,4 @@
-package com.hunseong.lolcruit.service.user;
+package com.hunseong.lolcruit.service;
 
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;

@@ -4,7 +4,7 @@ import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.exception.ErrorCode;
-import com.hunseong.lolcruit.service.post.PostService;
+import com.hunseong.lolcruit.service.PostService;
 import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;

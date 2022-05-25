@@ -1,6 +1,6 @@
 package com.hunseong.lolcruit.web;
 
-import com.hunseong.lolcruit.service.post.PostService;
+import com.hunseong.lolcruit.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
