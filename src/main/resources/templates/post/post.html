@@ -32,8 +32,10 @@
             <p style="margin-top: 30px; color: cadetblue">Comments</p>
             <hr style="margin-bottom: 20px">
             <div th:each="comment : ${post.comments}" class="card text-white bg-primary mb-3" style="max-width: 30rem; padding-bottom: 20px">
-                <div th:text="|작성자 : ${comment.nickname} |" class="card-header">
-                    <span th:text="${comment.createdDate}" style="font-size: 8px"></span></div>
+                <div class="card-header">
+                    <span th:text="|작성자 : ${comment.nickname} |"></span>
+                    <span th:text="${comment.createdDate}" style="font-size: 8px"></span>
+                </div>
                 <div class="card-body">
                     <p th:text="${comment.content}" class="card-text"></p>
                 </div>
@@ -53,10 +55,11 @@
             <form th:if="${user != null}">
                 <fieldset>
                     <div class="form-group">
-                        <label for="exampleTextarea" class="form-label mt-4">댓글 작성</label>
-                        <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                        <label for="content" class="form-label mt-4">댓글 작성</label>
+                        <textarea class="form-control" id="content" name="content" rows="3"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="margin-top: 10px">작성</button>
+                    <button type="button" id="btn-comment-save"
+                            class="btn btn-primary" style="margin-top: 10px">작성</button>
                 </fieldset>
             </form>
         </div>
