@@ -35,8 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/posts/**").hasRole(Role.USER.name())
-                .antMatchers("/posts/add/**").hasRole(Role.USER.name())
+                .antMatchers("/api/posts/**").hasRole(Role.USER.name()) // 등록, 수정, 삭제
+                .antMatchers("/posts/add/**").hasRole(Role.USER.name()) // 등록 Form
+                .antMatchers("/posts/{\\d+}/edit").hasRole(Role.USER.name()) // 수정 Form
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
