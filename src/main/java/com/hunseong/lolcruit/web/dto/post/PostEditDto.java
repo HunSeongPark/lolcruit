@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
  * Created by Hunseong on 2022/05/24
  */
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class PostEditDto {
 
     private Long id;

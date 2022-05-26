@@ -21,6 +21,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,6 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Transactional
 @SpringBootTest
 class PostServiceTest {
+
+    @PersistenceContext
+    EntityManager em;
 
     @Autowired
     private PostRepository postRepository;
@@ -200,5 +206,31 @@ class PostServiceTest {
         CustomException customException = assertThrows(CustomException.class,
                 () -> postService.findByIdForEdit(postId, newUser));
         log.info(customException.getMessage());
+    }
+
+    @Test
+    void update() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
+        userService.join(joinRequestDto);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
+        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        PostEditDto postEditDto = new PostEditDto(postId, "newTitle", "newContent", Position.TOP);
+
+        // when
+        postService.update(postEditDto, postId);
+        em.flush();
+        em.clear();
+
+        // then
+        PostReadDto result = postService.findByIdForRead(postId);
+        assertThat(result.getTitle()).isEqualTo(postEditDto.getTitle());
+        assertThat(result.getContent()).isEqualTo(postEditDto.getContent());
+        assertThat(result.getPosition()).isEqualTo(postEditDto.getPosition());
     }
 }
