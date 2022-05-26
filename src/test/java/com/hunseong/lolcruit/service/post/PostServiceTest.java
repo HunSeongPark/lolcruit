@@ -7,6 +7,7 @@ import com.hunseong.lolcruit.domain.user.Role;
 import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.service.PostService;
 import com.hunseong.lolcruit.service.UserService;
+import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
 import com.hunseong.lolcruit.web.dto.post.PostReadDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
@@ -152,5 +153,52 @@ class PostServiceTest {
                 () -> postService.findByIdForRead(1L));
         log.info(customException.getMessage());
 
+    }
+
+    @Test
+    void findByIdForEdit_success() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
+        userService.join(joinRequestDto);
+
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
+        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        SessionUser user = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+
+        // when
+        PostEditDto result = postService.findByIdForEdit(postId, user);
+
+        // then
+        assertThat(result.getId()).isEqualTo(postId);
+        assertThat(result.getContent()).isEqualTo(postRequestDto.getContent());
+    }
+
+    @Test
+    void findByIdForEdit_fail_unauthorized_user() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
+        userService.join(joinRequestDto);
+
+        JoinRequestDto joinRequestDto2 = new JoinRequestDto("new", "1234", "new", "new@naver.com");
+        userService.join(joinRequestDto2);
+
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
+        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        SessionUser newUser = new SessionUser("new", "1234", "new", "new@naver.com", Role.USER);
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> postService.findByIdForEdit(postId, newUser));
+        log.info(customException.getMessage());
     }
 }
