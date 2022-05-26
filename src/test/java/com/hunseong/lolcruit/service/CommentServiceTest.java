@@ -5,6 +5,7 @@ import com.hunseong.lolcruit.domain.comment.CommentRepository;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.PostRepository;
 import com.hunseong.lolcruit.domain.user.Role;
+import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.web.dto.comment.CommentRequestDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
@@ -45,7 +46,7 @@ class CommentServiceTest {
 
     @DisplayName("댓글 등록에 성공한다")
     @Test
-    void add() {
+    void add_success() {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
@@ -66,5 +67,27 @@ class CommentServiceTest {
         assertThat(comment.getContent()).isEqualTo(commentRequestDto.getContent());
         assertThat(comment.getUser().getUsername()).isEqualTo(sessionUser.getUsername());
         assertThat(comment.getPost().getId()).isEqualTo(postId);
+    }
+
+    @DisplayName("[찾을 수 없는 사용자]댓글 등록에 실패한다")
+    @Test
+    void add_fail_user_not_found() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
+        userService.join(joinRequestDto);
+
+        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser newUser = new SessionUser("user1", "12", "user1", "user1@user.com", Role.USER);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        CommentRequestDto commentRequestDto = new CommentRequestDto("hi");
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> commentService.add(newUser, postId, commentRequestDto));
+        log.info(customException.getMessage());
     }
 }
