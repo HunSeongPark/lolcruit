@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -110,5 +112,30 @@ class CommentServiceTest {
         CustomException customException = assertThrows(CustomException.class,
                 () -> commentService.add(sessionUser, postId + 1, commentRequestDto));
         log.info(customException.getMessage());
+    }
+
+    @DisplayName("댓글 삭제에 성공한다")
+    @Test
+    void delete_success() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
+        userService.join(joinRequestDto);
+
+        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        CommentRequestDto commentRequestDto = new CommentRequestDto("hi");
+
+        Long commentId = commentService.add(sessionUser, postId, commentRequestDto);
+
+        // when
+        Long deletedCommentId = commentService.delete(sessionUser, postId, commentId);
+
+        // then
+        Optional<Comment> result = commentRepository.findById(deletedCommentId);
+        assertThat(result.isEmpty()).isTrue();
     }
 }
