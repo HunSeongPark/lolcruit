@@ -90,4 +90,25 @@ class CommentServiceTest {
                 () -> commentService.add(newUser, postId, commentRequestDto));
         log.info(customException.getMessage());
     }
+
+    @DisplayName("[찾을 수 없는 게시글]댓글 등록에 실패한다")
+    @Test
+    void add_fail_post_not_found() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
+        userService.join(joinRequestDto);
+
+        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        CommentRequestDto commentRequestDto = new CommentRequestDto("hi");
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> commentService.add(sessionUser, postId + 1, commentRequestDto));
+        log.info(customException.getMessage());
+    }
 }
