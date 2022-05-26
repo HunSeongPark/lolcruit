@@ -135,7 +135,6 @@ class PostServiceTest {
     void add_fail_not_found_user() {
 
         // given
-
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
         SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
 
@@ -143,5 +142,15 @@ class PostServiceTest {
         CustomException customException = assertThrows(CustomException.class,
                 () -> postService.add(postRequestDto, sessionUser));
         log.info(customException.getMessage());
+    }
+
+    @Test
+    void findByIdForRead_fail_post_not_found() {
+
+        // given & when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> postService.findByIdForRead(1L));
+        log.info(customException.getMessage());
+
     }
 }
