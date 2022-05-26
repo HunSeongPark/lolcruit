@@ -102,9 +102,17 @@ public class PostService {
 
     }
 
-    public Long delete(Long id) {
+    public Long delete(Long id, SessionUser sessionUser) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+
+        User user = userRepository.findByUsername(sessionUser.getUsername())
+                        .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!post.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
+        }
+
         postRepository.delete(post);
         return post.getId();
     }

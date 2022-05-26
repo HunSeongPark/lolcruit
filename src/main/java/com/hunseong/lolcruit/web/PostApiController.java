@@ -1,6 +1,8 @@
 package com.hunseong.lolcruit.web;
 
+import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.service.PostService;
+import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +21,9 @@ public class PostApiController {
     private final PostService postService;
 
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Long> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.delete(id));
+    public ResponseEntity<Long> delete(
+            @LoginUser SessionUser user,
+            @PathVariable Long id) {
+        return ResponseEntity.ok(postService.delete(id, user));
     }
 }

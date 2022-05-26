@@ -233,4 +233,23 @@ class PostServiceTest {
         assertThat(result.getContent()).isEqualTo(postEditDto.getContent());
         assertThat(result.getPosition()).isEqualTo(postEditDto.getPosition());
     }
+
+//    @Test
+//    void delete() {
+//
+//        // given
+//        JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
+//        userService.join(joinRequestDto);
+//
+//        PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
+//        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+//
+//        Long postId = postService.add(postRequestDto, sessionUser);
+//
+//        // when
+//        Long deletedPostId = postService.delete(postId);
+//
+//        // then
+//        postService.findByIdForRead(deletedPostId);
+//    }
 }
