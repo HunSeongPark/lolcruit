@@ -272,4 +272,33 @@ class CommentServiceTest {
         Comment comment = commentRepository.findById(editedCommentId).get();
         assertThat(comment.getContent()).isEqualTo(editRequestDto.getContent());
     }
+
+    @DisplayName("[찾을 수 없는 사용자] 댓글 수정에 실패한다")
+    @Test
+    void edit_fail_user_not_found() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
+        userService.join(joinRequestDto);
+
+        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser newUser = new SessionUser("new", "12", "new", "new@user.com", Role.USER);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        CommentRequestDto commentRequestDto = new CommentRequestDto("hi");
+
+        Long commentId = commentService.add(sessionUser, postId, commentRequestDto);
+
+        CommentRequestDto editRequestDto = new CommentRequestDto("edit!");
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> commentService.edit(newUser, postId, commentId, editRequestDto));
+        log.info(customException.getMessage());
+
+    }
+
+
 }
