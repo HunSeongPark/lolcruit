@@ -4,6 +4,7 @@ import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.post.PostRepository;
 import com.hunseong.lolcruit.domain.user.Role;
+import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.service.PostService;
 import com.hunseong.lolcruit.service.UserService;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
@@ -11,6 +12,7 @@ import com.hunseong.lolcruit.web.dto.post.PostReadDto;
 import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,10 +21,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by Hunseong on 2022/05/19
  */
+@Slf4j
 @Transactional
 @SpringBootTest
 class PostServiceTest {
@@ -124,5 +129,19 @@ class PostServiceTest {
         assertThat(result.getContent()).isEqualTo(postRequestDto.getContent());
         assertThat(result.getWriter()).isEqualTo(postRequestDto.getWriter());
         assertThat(result.getPosition()).isEqualTo(postRequestDto.getPosition());
+    }
+
+    @Test
+    void add_fail_not_found_user() {
+
+        // given
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
+        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> postService.add(postRequestDto, sessionUser));
+        log.info(customException.getMessage());
     }
 }
