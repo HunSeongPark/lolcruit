@@ -16,7 +16,7 @@ import java.util.Random;
  * Created by Hunseong on 2022/05/19
  */
 @Profile("local")
-@Component
+//@Component
 @RequiredArgsConstructor
 public class TestDBInit {
 

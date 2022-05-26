@@ -1,5 +1,6 @@
 const main = {
     init: function () {
+        $('#comment-edit-form').hide();
         const _this = this;
 
         // 글 삭제
@@ -7,12 +8,23 @@ const main = {
             _this.delete();
         });
 
+        // 댓글 등록
         $('#btn-comment-save').on('click', function () {
             _this.commentSave();
         });
+
+        // 댓글 수정 form 전환
+        $('#btn-comment-edit-form').on('click', function () {
+            _this.commentEditForm();
+        })
+
+        // 댓글 수정 취소
+        $('#btn-comment-cancel').on('click', function () {
+            _this.commentEditCancel();
+        })
     },
 
-    /** 글 삭제 */
+    // 글 삭제
     delete: function () {
         const id = $('#id').val();
         const con_check = confirm("정말 삭제하시겠습니까?");
@@ -41,7 +53,7 @@ const main = {
         }
     },
 
-    /** 댓글 저장 */
+    // 댓글 등록
     commentSave: function () {
         const postId = $('#id').val();
         const data = {
@@ -70,6 +82,16 @@ const main = {
             });
         }
     },
+
+    // 댓글 수정 form 전환
+    commentEditForm: function () {
+        $('#comment-edit-form').show();
+    },
+
+    // 댓글 수정 취소
+    commentEditCancel: function () {
+        $('#comment-edit-form').hide();
+    }
 };
 
 main.init();
