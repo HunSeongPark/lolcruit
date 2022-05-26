@@ -187,4 +187,57 @@ class CommentServiceTest {
         log.info(customException.getMessage());
 
     }
+
+    @DisplayName("[찾을 수 없는 댓글]댓글 삭제에 실패한다")
+    @Test
+    void delete_fail_comment_not_found() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
+        userService.join(joinRequestDto);
+
+        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        CommentRequestDto commentRequestDto = new CommentRequestDto("hi");
+
+        Long commentId = commentService.add(sessionUser, postId, commentRequestDto);
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> commentService.delete(sessionUser, postId, commentId + 1));
+        log.info(customException.getMessage());
+
+    }
+
+    @DisplayName("[인증되지 않은 사용자]댓글 삭제에 실패한다")
+    @Test
+    void delete_fail_unauthorized_user() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
+        userService.join(joinRequestDto);
+
+        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+
+        JoinRequestDto joinRequestDto2 = new JoinRequestDto("new", "12", "new", "new@user.com");
+        userService.join(joinRequestDto2);
+
+        SessionUser newUser = new SessionUser("new", "12", "new", "new@user.com", Role.USER);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        CommentRequestDto commentRequestDto = new CommentRequestDto("hi");
+
+        Long commentId = commentService.add(sessionUser, postId, commentRequestDto);
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> commentService.delete(newUser, postId, commentId));
+        log.info(customException.getMessage());
+
+    }
 }
