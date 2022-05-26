@@ -40,11 +40,12 @@
                         <span style="font-size: small" th:text="${comment.nickname}"></span>
                         <span style="font-size: xx-small" th:text="${comment.createdDate}"></span>
                     </span>
-                    <a type="button" data-toggle="collapse"
+                    <a type="button" data-toggle="collapse" th:if="${user?.nickname == comment.nickname}"
                        th:attr="data-target=${'.multi-collapse-' + comment.id}">수정</a>
                     <a type="button" style="color: red" id="btn-comment-delete"
                        th:postId="${post.id}"
                        th:commentId="${comment.id}"
+                       th:if="${user?.nickname == comment.nickname}"
                        th:onclick="main.commentDelete(this.getAttribute('postId'), this.getAttribute('commentId'))">삭제</a>
                     <p th:classappend="|multi-collapse-${comment.id}|" class="collapse show"
                        th:text="${comment.content}"></p>

@@ -82,15 +82,16 @@ const main = {
     },
 
     // 댓글 수정
-    commentEdit: function () {
+    commentEdit: function (form) {
         const postId = $('#id').val();
-        const commentId = $('#comment-id').val();
+        const commentId = form.querySelector('#comment-id').value;
+
         const data = {
-            content: $('#content').val()
+            content: form.querySelector('#edit-content').value,
         }
 
         if (data.content.trim() === "") {
-            alert("댓글 내용을 입력하세요.")
+            alert("댓글을 입력하세요.");
         } else {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");

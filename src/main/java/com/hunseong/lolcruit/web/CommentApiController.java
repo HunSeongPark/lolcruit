@@ -33,6 +33,20 @@ public class CommentApiController {
         return ResponseEntity.ok(commentService.add(user, postId, commentRequestDto));
     }
 
+    @PutMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<Long> edit(
+            @LoginUser SessionUser user,
+            @PathVariable Long postId,
+            @PathVariable Long commentId,
+            @RequestBody CommentRequestDto commentRequestDto
+    ) {
+        if (user == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(commentService.edit(user, postId, commentId, commentRequestDto));
+    }
+
     @DeleteMapping("/posts/{postId}/comments/{commentId}")
     public ResponseEntity<Long> delete(
             @LoginUser SessionUser user,

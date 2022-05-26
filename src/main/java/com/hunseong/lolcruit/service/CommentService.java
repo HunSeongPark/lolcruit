@@ -11,6 +11,7 @@ import com.hunseong.lolcruit.web.dto.comment.CommentRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.hunseong.lolcruit.exception.ErrorCode.*;
 
@@ -18,6 +19,7 @@ import static com.hunseong.lolcruit.exception.ErrorCode.*;
  * Created by Hunseong on 2022/05/25
  */
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class CommentService {
 
@@ -36,8 +38,38 @@ public class CommentService {
     }
 
     public Long delete(SessionUser sessionUser, Long postId, Long commentId) {
+
         User user = userRepository.findByUsername(sessionUser.getUsername())
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+
+        Comment comment = commentRepository.findByIdFetchUser(commentId)
+                .orElseThrow(() -> new CustomException(COMMENT_NOT_FOUND));
+
+        validate(postId, user, comment);
+
+        commentRepository.delete(comment);
+
+        return comment.getId();
+    }
+
+    public Long edit(SessionUser sessionUser, Long postId,
+                     Long commentId, CommentRequestDto commentRequestDto) {
+
+        User user = userRepository.findByUsername(sessionUser.getUsername())
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+
+
+        Comment comment = commentRepository.findByIdFetchUser(commentId)
+                .orElseThrow(() -> new CustomException(COMMENT_NOT_FOUND));
+
+        validate(postId, user, comment);
+
+        comment.edit(commentRequestDto.getContent());
+
+        return comment.getId();
+    }
+
+    private void validate(Long postId, User user, Comment comment) {
 
         boolean isPostExist = postRepository.existsById(postId);
 
@@ -45,15 +77,8 @@ public class CommentService {
             throw new CustomException(POST_NOT_FOUND);
         }
 
-        Comment comment = commentRepository.findByIdFetchUser(commentId)
-                .orElseThrow(() -> new CustomException(COMMENT_NOT_FOUND));
-
         if (!comment.getUser().getNickname().equals(user.getNickname())) {
             throw new CustomException(UNAUTHORIZED_USER);
         }
-
-        commentRepository.delete(comment);
-
-        return comment.getId();
     }
 }
