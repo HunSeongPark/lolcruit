@@ -1,4 +1,4 @@
-package com.hunseong.lolcruit.service.post;
+package com.hunseong.lolcruit.service;
 
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;
@@ -14,6 +14,7 @@ import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
