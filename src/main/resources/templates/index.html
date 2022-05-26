@@ -19,7 +19,6 @@
     <div class="login-div d-inline" th:if="${user != null}">
       <span class="welcome"><b th:text="${user?.nickname}">Guest</b> 님 반가워요!</span>
       <button onclick="location.href='/auth/logout';" type="button" class="btn btn-danger btn-logout">로그아웃</button>
-      <button type="button" class="btn btn-primary btn-setting">정보수정</button>
     </div>
 
     <div class="guest-div d-inline" th:if="${user == null}">
