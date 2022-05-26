@@ -34,6 +34,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class CommentServiceTest {
 
+    @PersistenceContext
+    EntityManager em;
+
     @Autowired
     private CommentRepository commentRepository;
 
@@ -239,5 +242,34 @@ class CommentServiceTest {
                 () -> commentService.delete(newUser, postId, commentId));
         log.info(customException.getMessage());
 
+    }
+
+    @DisplayName("댓글 수정에 성공한다")
+    @Test
+    void edit_success() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
+        userService.join(joinRequestDto);
+
+        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        CommentRequestDto commentRequestDto = new CommentRequestDto("hi");
+
+        Long commentId = commentService.add(sessionUser, postId, commentRequestDto);
+
+        CommentRequestDto editRequestDto = new CommentRequestDto("edit!");
+
+        // when
+        Long editedCommentId = commentService.edit(sessionUser, postId, commentId, editRequestDto);
+        em.flush();
+        em.clear();
+
+        // then
+        Comment comment = commentRepository.findById(editedCommentId).get();
+        assertThat(comment.getContent()).isEqualTo(editRequestDto.getContent());
     }
 }
