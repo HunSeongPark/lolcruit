@@ -85,11 +85,14 @@ public class PostService {
         return PostReadDto.fromEntity(post, comments);
     }
 
-    public PostEditDto findByIdForEdit(Long id, SessionUser user) {
+    public PostEditDto findByIdForEdit(Long id, SessionUser sessionUser) {
         Post post = postRepository.findByIdFetchUser(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
-        if (!post.getUser().getNickname().equals(user.getNickname())) {
+        User user = userRepository.findByUsername(sessionUser.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!post.getUser().getId().equals(user.getId())) {
             throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
         }
 

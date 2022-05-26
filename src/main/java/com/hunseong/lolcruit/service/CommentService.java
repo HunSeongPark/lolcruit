@@ -77,7 +77,7 @@ public class CommentService {
             throw new CustomException(POST_NOT_FOUND);
         }
 
-        if (!comment.getUser().getNickname().equals(user.getNickname())) {
+        if (!comment.getUser().getId().equals(user.getId())) {
             throw new CustomException(UNAUTHORIZED_USER);
         }
     }
