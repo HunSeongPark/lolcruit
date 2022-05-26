@@ -163,4 +163,28 @@ class CommentServiceTest {
         log.info(customException.getMessage());
 
     }
+
+    @DisplayName("[찾을 수 없는 게시글]댓글 삭제에 실패한다")
+    @Test
+    void delete_fail_post_not_found() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
+        userService.join(joinRequestDto);
+
+        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        CommentRequestDto commentRequestDto = new CommentRequestDto("hi");
+
+        Long commentId = commentService.add(sessionUser, postId, commentRequestDto);
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> commentService.delete(sessionUser, postId + 1, commentId));
+        log.info(customException.getMessage());
+
+    }
 }
