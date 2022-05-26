@@ -14,6 +14,7 @@ import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,6 +49,7 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
 
+    @DisplayName("모든 게시글을 가져온다")
     @Test
     void findAll() {
 
@@ -79,6 +81,7 @@ class PostServiceTest {
         assertThat(result.getContent().get(1).getId()).isEqualTo(savedPost1.getId());
     }
 
+    @DisplayName("포지션에 해당하는 게시글을 모두 가져온다.")
     @Test
     void findAllByPosition() {
 
@@ -117,6 +120,7 @@ class PostServiceTest {
         assertThat(result.getContent().get(1).getId()).isEqualTo(savedPost1.getId());
     }
 
+    @DisplayName("게시글 등록에 성공한다")
     @Test
     void add_success() {
 
@@ -138,6 +142,7 @@ class PostServiceTest {
         assertThat(result.getPosition()).isEqualTo(postRequestDto.getPosition());
     }
 
+    @DisplayName("[등록되지 않은 사용자] 게시글 등록에 실패한다")
     @Test
     void add_fail_not_found_user() {
 
@@ -151,6 +156,7 @@ class PostServiceTest {
         log.info(customException.getMessage());
     }
 
+    @DisplayName("[존재하지 않는 게시글] 게시글 읽기에 실패한다")
     @Test
     void findByIdForRead_fail_post_not_found() {
 
@@ -161,6 +167,7 @@ class PostServiceTest {
 
     }
 
+    @DisplayName("수정을 위한 게시글 가져오기에 성공한다")
     @Test
     void findByIdForEdit_success() {
 
@@ -184,6 +191,7 @@ class PostServiceTest {
         assertThat(result.getContent()).isEqualTo(postRequestDto.getContent());
     }
 
+    @DisplayName("[인증되지 않은 사용자] 수정을 위한 게시글 가져오기에 실패한다")
     @Test
     void findByIdForEdit_fail_unauthorized_user() {
 
@@ -208,6 +216,7 @@ class PostServiceTest {
         log.info(customException.getMessage());
     }
 
+    @DisplayName("게시글 수정에 성공한다")
     @Test
     void update() {
 
@@ -234,6 +243,7 @@ class PostServiceTest {
         assertThat(result.getPosition()).isEqualTo(postEditDto.getPosition());
     }
 
+    @DisplayName("게시글 삭제에 성공한다")
     @Test
     void delete_success() {
 
@@ -255,6 +265,7 @@ class PostServiceTest {
         log.info(customException.getMessage());
     }
 
+    @DisplayName("[찾을 수 없는 사용자]게시글 삭제에 실패한다")
     @Test
     void delete_fail_user_not_found() {
 
@@ -275,6 +286,7 @@ class PostServiceTest {
         log.info(customException.getMessage());
     }
 
+    @DisplayName("[인증되지 않은 사용자]게시글 삭제에 실패한다")
     @Test
     void delete_fail_unauthorized_user() {
 
