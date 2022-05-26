@@ -3,8 +3,14 @@ package com.hunseong.lolcruit.service.post;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.domain.post.Post;
 import com.hunseong.lolcruit.domain.post.PostRepository;
+import com.hunseong.lolcruit.domain.user.Role;
 import com.hunseong.lolcruit.service.PostService;
+import com.hunseong.lolcruit.service.UserService;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
+import com.hunseong.lolcruit.web.dto.post.PostReadDto;
+import com.hunseong.lolcruit.web.dto.post.PostRequestDto;
+import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
+import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +29,9 @@ class PostServiceTest {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private PostService postService;
@@ -94,5 +103,26 @@ class PostServiceTest {
         assertThat(result.getTotalElements()).isEqualTo(2);
         assertThat(result.getContent().get(0).getId()).isEqualTo(savedPost3.getId());
         assertThat(result.getContent().get(1).getId()).isEqualTo(savedPost1.getId());
+    }
+
+    @Test
+    void add_success() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
+        userService.join(joinRequestDto);
+
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
+        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+
+        // when
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        // then
+        PostReadDto result = postService.findByIdForRead(postId);
+        assertThat(result.getContent()).isEqualTo(postRequestDto.getContent());
+        assertThat(result.getWriter()).isEqualTo(postRequestDto.getWriter());
+        assertThat(result.getPosition()).isEqualTo(postRequestDto.getPosition());
     }
 }

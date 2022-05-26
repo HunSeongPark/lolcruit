@@ -14,8 +14,6 @@ import java.util.List;
  * Created by Hunseong on 2022/05/18
  */
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Post extends BaseTimeEntity {
@@ -42,6 +40,15 @@ public class Post extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Builder
+    public Post(String title, String content, String writer, Position position, User user) {
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.position = position;
+        this.user = user;
+    }
 
     // Update Logic
     public void update(PostEditDto postEditDto) {

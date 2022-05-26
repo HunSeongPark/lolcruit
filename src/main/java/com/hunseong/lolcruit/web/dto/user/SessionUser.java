@@ -10,7 +10,7 @@ import lombok.Getter;
  * Created by Hunseong on 2022/05/24
  */
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class SessionUser {
     private String username;
     private String password;
