@@ -33,38 +33,33 @@
             <p th:text="${post.content}" class="card-text"></p>
             <p style="margin-top: 30px; color: cadetblue">Comments</p>
             <hr style="margin-bottom: 20px">
-            <div th:each="comment : ${post.comments}" class="card text-white bg-primary mb-3"
-                 style="max-width: 30rem; padding-bottom: 20px">
-                <div class="card-header">
-                    <span th:text="|작성자 : ${comment.nickname} |"></span>
-                    <span th:text="${comment.createdDate}" style="font-size: 8px"></span>
-                </div>
-                <div class="card-body">
-                    <p th:text="${comment.content}" class="card-text"></p>
-                </div>
-                <div th:if="${user?.nickname == comment.nickname}">
-                    <button type="button" id="btn-comment-edit-form"
-                            class="btn btn-primary" style="margin-left: 10px">수정
-                    </button>
-                    <button class="btn btn-warning" id="btn-comment-delete">삭제
-                    </button>
-                </div>
-                <form id="comment-edit-form">
-                    <hr style="margin-bottom: 20px">
-                    <fieldset>
+
+            <ul class="list-group-flush">
+                <li th:attr="id=${'comment-' + comment.id}" th:each="comment : ${post.comments}" class="list-group-item">
+                    <span>
+                        <span style="font-size: small" th:text="${comment.nickname}"></span>
+                        <span style="font-size: xx-small" th:text="${comment.createdDate}"></span>
+                    </span>
+                    <a type="button" data-toggle="collapse"
+                       th:attr="data-target=${'.multi-collapse-' + comment.id}">수정</a>
+                    <a type="button" style="color: red" id="btn-comment-delete"
+                       th:postId="${post.id}"
+                       th:commentId="${comment.id}"
+                       th:onclick="main.commentDelete(this.getAttribute('postId'), this.getAttribute('commentId'))">삭제</a>
+                    <p th:classappend="|multi-collapse-${comment.id}|" class="collapse show"
+                       th:text="${comment.content}"></p>
+
+                    <form th:classappend="|multi-collapse-${comment.id}|" class="collapse">
+                        <input type="hidden" id="comment-id" th:value="${comment.id}">
                         <div class="form-group">
-                            <label for="content-edit" class="form-label mt-4" style="margin-left: 10px">댓글 수정</label>
-                            <textarea class="form-control" id="content-edit" name="content" rows="3"></textarea>
+                            <textarea class="form-control" id="edit-content" name="content"
+                                      rows="3" th:text="${comment.content}"></textarea>
+                            <button type="button" id="btn-comment-edit"
+                                    class="btn btn-primary bi bi-pencil-square">수정</button>
                         </div>
-                        <button type="button" id="btn-comment-edit"
-                                class="btn btn-primary" style="margin-top: 10px; margin-left: 10px">수정
-                        </button>
-                        <button type="button" id="btn-comment-cancel"
-                                class="btn btn-warning" style="margin-top: 10px">취소
-                        </button>
-                    </fieldset>
-                </form>
-            </div>
+                    </form>
+                </li>
+            </ul>
             <hr style="margin-bottom: 20px">
             <div class="guest-div d-inline" th:if="${user == null}">
                 <span class="welcome"><a href="/auth/login">로그인</a> 후 이용해주세요.</span>

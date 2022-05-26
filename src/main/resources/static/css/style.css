@@ -100,3 +100,11 @@ h1 {
   border-color: red;
   color: red;
 }
+
+.visible {
+  visibility: visible;
+}
+
+.visible-none {
+  visibility: hidden;
+}

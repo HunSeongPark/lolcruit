@@ -1,6 +1,5 @@
 const main = {
     init: function () {
-        $('#comment-edit-form').hide();
         const _this = this;
 
         // 글 삭제
@@ -13,15 +12,14 @@ const main = {
             _this.commentSave();
         });
 
-        // 댓글 수정 form 전환
-        $('#btn-comment-edit-form').on('click', function () {
-            _this.commentEditForm();
-        })
+        // 댓글 수정
+        document.querySelectorAll('#btn-comment-edit').forEach(function (item) {
+            item.addEventListener('click', function () {
+                const form = this.closest('form');
+                _this.commentEdit(form);
+            });
+        });
 
-        // 댓글 수정 취소
-        $('#btn-comment-cancel').on('click', function () {
-            _this.commentEditCancel();
-        })
     },
 
     // 글 삭제
@@ -36,7 +34,7 @@ const main = {
             $.ajax({
                 type: 'DELETE',
                 contentType: 'application/json; charset=utf-8',
-                url: '/api/post/' + id,
+                url: '/api/posts/' + id,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
@@ -76,21 +74,69 @@ const main = {
                 data: JSON.stringify(data)
             }).done(function () {
                 alert("댓글이 등록되었습니다.");
-                window.location.href='/posts/' + postId;
+                window.location.href = '/posts/' + postId;
             }).fail(function () {
                 alert("댓글 등록에 실패했습니다.");
             });
         }
     },
 
-    // 댓글 수정 form 전환
-    commentEditForm: function () {
-        $('#comment-edit-form').show();
+    // 댓글 수정
+    commentEdit: function () {
+        const postId = $('#id').val();
+        const commentId = $('#comment-id').val();
+        const data = {
+            content: $('#content').val()
+        }
+
+        if (data.content.trim() === "") {
+            alert("댓글 내용을 입력하세요.")
+        } else {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            $.ajax({
+                type: 'PUT',
+                contentType: 'application/json; charset=utf-8',
+                url: '/api/posts/' + postId + '/comments/' + commentId,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'JSON',
+                data: JSON.stringify(data)
+            }).done(function () {
+                alert("댓글이 수정되었습니다.");
+                window.location.href = '/posts/' + postId;
+            }).fail(function () {
+                alert("댓글 수정에 실패했습니다.");
+            });
+        }
     },
 
-    // 댓글 수정 취소
-    commentEditCancel: function () {
-        $('#comment-edit-form').hide();
+    // 댓글 삭제
+    commentDelete: function (postId, commentId) {
+        const con_check = confirm("정말 삭제하시겠습니까?");
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        if (con_check === true) {
+            $.ajax({
+                type: 'DELETE',
+                contentType: 'application/json; charset=utf-8',
+                url: '/api/posts/' + postId + '/comments/' + commentId,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: 'JSON',
+            }).done(function () {
+                alert("댓글이 삭제되었습니다.");
+                window.location.href = '/posts/' + postId;
+            }).fail(function () {
+                alert("댓글 삭제에 실패했습니다.");
+            });
+        } else {
+            return false;
+        }
     }
 };
 
