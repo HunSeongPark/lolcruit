@@ -254,4 +254,47 @@ class PostServiceTest {
                 () -> postService.findByIdForRead(deletedPostId));
         log.info(customException.getMessage());
     }
+
+    @Test
+    void delete_fail_user_not_found() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
+        userService.join(joinRequestDto);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
+        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        SessionUser newUser = new SessionUser("new", "1234", "new", "new@naver.com", Role.USER);
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> postService.delete(postId, newUser));
+        log.info(customException.getMessage());
+    }
+
+    @Test
+    void delete_fail_unauthorized_user() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
+        userService.join(joinRequestDto);
+
+        JoinRequestDto joinRequestDto2 = new JoinRequestDto("new", "1234", "new", "new@naver.com");
+        userService.join(joinRequestDto2);
+
+        PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
+        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+
+        Long postId = postService.add(postRequestDto, sessionUser);
+
+        SessionUser newUser = new SessionUser("new", "1234", "new", "new@naver.com", Role.USER);
+
+        // when & then
+        CustomException customException = assertThrows(CustomException.class,
+                () -> postService.delete(postId, newUser));
+        log.info(customException.getMessage());
+    }
 }
