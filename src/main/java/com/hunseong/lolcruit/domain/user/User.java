@@ -46,8 +46,8 @@ public class User extends BaseTimeEntity {
         this.role = Role.USER;
     }
 
-    public void update(EditRequestDto editRequestDto) {
-        this.nickname = editRequestDto.getNickname();
-        this.password = editRequestDto.getPassword();
+    public void update(String nickname, String password) {
+        this.nickname = nickname;
+        this.password = password;
     }
 }

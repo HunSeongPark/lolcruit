@@ -9,6 +9,11 @@ import com.hunseong.lolcruit.web.dto.user.EditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +26,7 @@ import java.util.Arrays;
 /**
  * Created by Hunseong on 2022/05/23
  */
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @Controller
@@ -102,26 +108,28 @@ public class UserController {
     @GetMapping("/edit")
     public String editForm(
             @LoginUser SessionUser user,
-            @ModelAttribute("user") EditRequestDto editRequestDto
+            @ModelAttribute("user") EditRequestDto editRequestDto,
+            Model model
     ) {
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
-
+        model.addAttribute("sessionUser", user);
         return "auth/editForm";
     }
 
     @PostMapping("/edit")
     public String edit(
-            @LoginUser @ModelAttribute("sessionUser") SessionUser user,
+            @LoginUser SessionUser user,
             @Validated @ModelAttribute("user") EditRequestDto editRequestDto,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            Model model
             ) {
 
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
-
+        model.addAttribute("sessionUser", user);
         // 회원정보 수정 실패 (validation error)
         if (bindingResult.hasErrors()) {
             return "auth/editForm";
@@ -132,7 +140,6 @@ public class UserController {
             bindingResult.reject("duplicateNickname", "이미 존재하는 닉네임입니다.");
             return "auth/editForm";
         }
-
 
         userService.edit(editRequestDto, user);
 

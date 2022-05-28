@@ -57,11 +57,10 @@ public class UserService {
         User user = userRepository.findByUsername(sessionUser.getUsername())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        editRequestDto.encodePassword(passwordEncoder.encode(editRequestDto.getPassword()));
+        String encodePw = passwordEncoder.encode(editRequestDto.getPassword());
+        user.update(editRequestDto.getNickname(), encodePw);
 
-        user.update(editRequestDto);
-
-//        세션 변경 처리
+        // Security 세션 변경 처리
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         user.getUsername(), editRequestDto.getPassword())
