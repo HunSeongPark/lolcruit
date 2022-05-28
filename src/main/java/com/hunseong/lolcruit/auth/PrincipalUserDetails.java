@@ -1,6 +1,7 @@
 package com.hunseong.lolcruit.auth;
 
 import com.hunseong.lolcruit.domain.user.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.Collection;
 /**
  * Created by Hunseong on 2022/05/23
  */
+@Getter
 @RequiredArgsConstructor
 public class PrincipalUserDetails implements UserDetails {
 

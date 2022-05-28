@@ -30,7 +30,7 @@ public class PrincipalUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-        httpSession.setAttribute("user", SessionUser.fromEntity(user));
+//        httpSession.setAttribute("user", SessionUser.fromEntity(user));
 
         return new PrincipalUserDetails(user);
     }
