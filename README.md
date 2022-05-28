@@ -7,3 +7,21 @@ Logo designed by 이량([@2ryangg](https://www.instagram.com/2ryangg))
 
 ## 기록
 - SuccessHandler 권한 없는 페이지 접근 / 직접 로그인 경로 요청 / else에 대한 이전 페이지 이동
+- Spring Security 회원 정보 수정 - UsernamePasswordAuthenticationToken의 password Parameter에 인코딩 된 비밀번호를 넣으면 안되고, 원본 비밀번호 넣기
+```java
+@Transactional
+    public void edit(EditRequestDto editRequestDto, SessionUser sessionUser) {
+        User user = userRepository.findByUsername(sessionUser.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        String encodePw = passwordEncoder.encode(editRequestDto.getPassword());
+        user.update(editRequestDto.getNickname(), encodePw);
+
+        // Security 세션 변경 처리
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getUsername(), editRequestDto.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+```
