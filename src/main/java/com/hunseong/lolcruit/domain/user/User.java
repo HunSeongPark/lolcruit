@@ -2,6 +2,7 @@ package com.hunseong.lolcruit.domain.user;
 
 import com.hunseong.lolcruit.domain.BaseTimeEntity;
 import com.hunseong.lolcruit.domain.post.Post;
+import com.hunseong.lolcruit.web.dto.user.EditRequestDto;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
@@ -43,5 +44,10 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.email = email;
         this.role = Role.USER;
+    }
+
+    public void update(EditRequestDto editRequestDto) {
+        this.nickname = editRequestDto.getNickname();
+        this.password = editRequestDto.getPassword();
     }
 }

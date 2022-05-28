@@ -1,8 +1,13 @@
 package com.hunseong.lolcruit.web;
 
 import com.hunseong.lolcruit.auth.LoginErrorCode;
+import com.hunseong.lolcruit.auth.LoginUser;
+import com.hunseong.lolcruit.exception.CustomException;
+import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.service.UserService;
+import com.hunseong.lolcruit.web.dto.user.EditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
+import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -92,5 +97,45 @@ public class UserController {
             request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
         }
         return "auth/loginForm";
+    }
+
+    @GetMapping("/edit")
+    public String editForm(
+            @LoginUser SessionUser user,
+            @ModelAttribute("user") EditRequestDto editRequestDto
+    ) {
+        if (user == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return "auth/editForm";
+    }
+
+    @PostMapping("/edit")
+    public String edit(
+            @LoginUser @ModelAttribute("sessionUser") SessionUser user,
+            @Validated @ModelAttribute("user") EditRequestDto editRequestDto,
+            BindingResult bindingResult
+            ) {
+
+        if (user == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        // 회원정보 수정 실패 (validation error)
+        if (bindingResult.hasErrors()) {
+            return "auth/editForm";
+        }
+
+        // 중복 닉네임 (global error)
+        if (userService.hasNickname(editRequestDto.getNickname())) {
+            bindingResult.reject("duplicateNickname", "이미 존재하는 닉네임입니다.");
+            return "auth/editForm";
+        }
+
+
+        userService.edit(editRequestDto, user);
+
+        return "redirect:/";
     }
 }
