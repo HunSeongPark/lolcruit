@@ -1,7 +1,6 @@
 spring:
   profiles:
     active: local
-    include: oauth
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{template/layout :: layout(~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<section class="container">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" id="id" th:value="${post.id}">
+    <div class="text-center banner">
+        <a href="/"><img src="/img/logo.jpeg" class="banner-img"></a>
+    </div>
+    <div class="card border-primary mb-3" style="margin-top: 6%; margin-bottom: 100px">
+        <div class="card-header">
+            <div style="display: inline">작성자 : <span th:text="${post.writer}"></span></div>
+            <div style="display: inline; float: right">작성시간 : <span th:text="${post.createdAt}"></span></div>
+        </div>
+        <div class="card-body">
+            <div th:switch="${post.position.name()}" style="margin-top: 20px; margin-bottom: 50px">
+                <img th:case="TOP" src="/img/top.png" class="position-img-post-read">
+                <img th:case="JUG" src="/img/jug.png" class="position-img-post-read">
+                <img th:case="MID" src="/img/mid.png" class="position-img-post-read">
+                <img th:case="ADC" src="/img/adc.png" class="position-img-post-read">
+                <img th:case="SUP" src="/img/sup.png" class="position-img-post-read">
+                <h4 th:text="${post.title}" class="card-title" style="display: inline; line-height: 50px"></h4>
+                <button class="btn btn-primary" th:if="${user?.id == post.writerId}"
+                        th:onclick="'location.href=\''+ @{/posts/{id}/edit(id=${post.id})} + '\''"
+                        style="margin-left: 30px; margin-right: 20px;">수정
+                </button>
+                <button class="btn btn-warning" id="btn-delete" th:if="${user?.id == post.writerId}">
+                    삭제
+                </button>
+            </div>
+
+            <p th:text="${post.content}" class="card-text"></p>
+            <p style="margin-top: 30px; color: cadetblue">Comments</p>
+            <hr style="margin-bottom: 20px">
+
+            <ul class="list-group-flush">
+                <li th:attr="id=${'comment-' + comment.id}" th:each="comment : ${post.comments}" class="list-group-item">
+                    <span>
+                        <span style="font-size: small" th:text="${comment.nickname}"></span>
+                        <span style="font-size: xx-small" th:text="${comment.createdDate}"></span>
+                    </span>
+                    <a type="button" data-toggle="collapse" th:if="${user?.id == comment.writerId}"
+                       th:attr="data-target=${'.multi-collapse-' + comment.id}">수정</a>
+                    <a type="button" style="color: red" id="btn-comment-delete"
+                       th:postId="${post.id}"
+                       th:commentId="${comment.id}"
+                       th:if="${user?.id == comment.writerId}"
+                       th:onclick="main.commentDelete(this.getAttribute('postId'), this.getAttribute('commentId'))">삭제</a>
+                    <p th:classappend="|multi-collapse-${comment.id}|" class="collapse show"
+                       th:text="${comment.content}"></p>
+
+                    <form th:classappend="|multi-collapse-${comment.id}|" class="collapse">
+                        <input type="hidden" id="comment-id" th:value="${comment.id}">
+                        <div class="form-group">
+                            <textarea class="form-control" id="edit-content" name="content"
+                                      rows="3" th:text="${comment.content}"></textarea>
+                            <button type="button" id="btn-comment-edit"
+                                    class="btn btn-primary bi bi-pencil-square">수정</button>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+            <hr style="margin-bottom: 20px">
+            <div class="guest-div d-inline" th:if="${user == null}">
+                <span class="welcome"><a href="/auth/login">로그인</a> 후 이용해주세요.</span>
+                <button onclick="location.href='/auth/login';" type="button" class="btn btn-info btn-login">로그인</button>
+                <button onclick="location.href='/auth/join';" type="button" class="btn btn-primary btn-join">회원가입
+                </button>
+            </div>
+            <form th:if="${user != null}">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="content" class="form-label mt-4">댓글 작성</label>
+                        <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+                    </div>
+                    <button type="button" id="btn-comment-save"
+                            class="btn btn-primary" style="margin-top: 10px">작성
+                    </button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{template/layout :: layout(~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<section class="container">
+    <div class="alert alert-dismissible alert-danger" style="margin-top: 100px; margin-bottom: 100px">
+        <h4 class="alert-heading">404 오류</h4>
+        <p class="mb-0">페이지를 찾을 수 없습니다.</p>
+    </div>
+    <button onclick="history.back();" type="button" class="btn btn-primary">이전으로</button>
+    <button onclick="window.location='/';" type="button" class="btn btn-secondary">홈으로</button>
+</section>
+</body>
+</html>
