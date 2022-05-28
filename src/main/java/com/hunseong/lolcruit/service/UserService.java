@@ -6,6 +6,7 @@ import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.web.dto.user.EditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
+import com.hunseong.lolcruit.web.dto.user.OAuthEditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.hunseong.lolcruit.constants.OAuthConst.PASSWORD_SECRET;
 
 /**
  * Created by Hunseong on 2022/05/23
@@ -64,6 +67,22 @@ public class UserService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         user.getUsername(), editRequestDto.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    @Transactional
+    public void oauthEdit(OAuthEditRequestDto oAuthEditRequestDto, SessionUser sessionUser) {
+
+        User user = userRepository.findByUsername(sessionUser.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        user.update(oAuthEditRequestDto.getNickname(), user.getPassword());
+
+        // Security 세션 변경 처리
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getUsername(), PASSWORD_SECRET)
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

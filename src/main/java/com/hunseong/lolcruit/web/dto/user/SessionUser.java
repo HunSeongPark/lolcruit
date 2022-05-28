@@ -18,6 +18,7 @@ public class SessionUser {
     private String nickname;
     private String email;
     private Role role;
+    private String provider;
 
     public static SessionUser fromEntity(User user) {
          return new SessionUser(
@@ -26,7 +27,8 @@ public class SessionUser {
                  user.getPassword(),
                  user.getNickname(),
                  user.getEmail(),
-                 user.getRole()
+                 user.getRole(),
+                 user.getProvider()
          );
     }
 }

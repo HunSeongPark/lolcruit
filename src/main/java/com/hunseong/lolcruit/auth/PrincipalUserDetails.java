@@ -2,21 +2,33 @@ package com.hunseong.lolcruit.auth;
 
 import com.hunseong.lolcruit.domain.user.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by Hunseong on 2022/05/23
  */
 @Getter
-@RequiredArgsConstructor
-public class PrincipalUserDetails implements UserDetails {
+public class PrincipalUserDetails implements UserDetails, OAuth2User {
 
     private final User user;
+    private Map<String, Object> attributes;
+
+    // 일반 로그인
+    public PrincipalUserDetails(User user) {
+        this.user = user;
+    }
+
+    // OAuth 로그인
+    public PrincipalUserDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -53,5 +65,17 @@ public class PrincipalUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+    /* OAuth2User Override */
+
+    @Override
+    public String getName() {
+        return user.getUsername();
+    }
+
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 }

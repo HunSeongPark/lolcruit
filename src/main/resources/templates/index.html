@@ -19,13 +19,17 @@
     <div class="login-div d-inline" th:if="${user != null}">
       <span class="welcome"><b th:text="${user?.nickname}">Guest</b> 님 반가워요!</span>
       <button onclick="location.href='/auth/logout';" type="button" class="btn btn-danger btn-logout">로그아웃</button>
-      <button onclick="location.href='/auth/edit';" type="button" class="btn btn-primary">정보수정</button>
+      <button th:if="${user?.provider == null}" onclick="location.href='/auth/edit';"
+              type="button" class="btn btn-primary">정보수정</button>
+      <button th:if="${user?.provider != null}" onclick="location.href='/auth/edit/oauth';"
+              type="button" class="btn btn-primary">정보수정</button>
     </div>
 
     <div class="guest-div d-inline" th:if="${user == null}">
       <span class="welcome"><a href="/auth/login">로그인</a> 후 이용해주세요.</span>
       <button onclick="location.href='/auth/login';" type="button" class="btn btn-info btn-login">로그인</button>
       <button onclick="location.href='/auth/join';" type="button" class="btn btn-primary btn-join">회원가입</button>
+      <a href="/oauth2/authorization/google"><img src="/img/google.png" style="width:30px"></a>
     </div>
     <!-- /welcome user div -->
 

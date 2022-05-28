@@ -7,6 +7,7 @@ import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.service.UserService;
 import com.hunseong.lolcruit.web.dto.user.EditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
+import com.hunseong.lolcruit.web.dto.user.OAuthEditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -142,6 +143,50 @@ public class UserController {
         }
 
         userService.edit(editRequestDto, user);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit/oauth")
+    public String oauthEditForm(
+            @LoginUser SessionUser user,
+            @ModelAttribute("user") OAuthEditRequestDto oAuthEditRequestDto,
+            Model model
+    ) {
+        if (user == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        model.addAttribute("sessionUser", user);
+        return "auth/oauthEditForm";
+    }
+
+    @PostMapping("/edit/oauth")
+    public String oauthEdit(
+            @LoginUser SessionUser user,
+            @Validated @ModelAttribute("user") OAuthEditRequestDto oAuthEditRequestDto,
+            BindingResult bindingResult,
+            Model model
+    ) {
+
+        if (user == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        model.addAttribute("sessionUser", user);
+
+        // 회원정보 수정 실패 (validation error)
+        if (bindingResult.hasErrors()) {
+            return "auth/oauthEditForm";
+        }
+
+        // 중복 닉네임 (global error)
+        if (userService.hasNickname(oAuthEditRequestDto.getNickname())) {
+            bindingResult.reject("duplicateNickname", "이미 존재하는 닉네임입니다.");
+            return "auth/editForm";
+        }
+
+        userService.oauthEdit(oAuthEditRequestDto, user);
 
         return "redirect:/";
     }
