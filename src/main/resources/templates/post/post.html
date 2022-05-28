@@ -21,11 +21,11 @@
                 <img th:case="ADC" src="/img/adc.png" class="position-img-post-read">
                 <img th:case="SUP" src="/img/sup.png" class="position-img-post-read">
                 <h4 th:text="${post.title}" class="card-title" style="display: inline; line-height: 50px"></h4>
-                <button class="btn btn-primary" th:if="${user?.nickname == post.writer}"
+                <button class="btn btn-primary" th:if="${user?.id == post.writerId}"
                         th:onclick="'location.href=\''+ @{/posts/{id}/edit(id=${post.id})} + '\''"
                         style="margin-left: 30px; margin-right: 20px;">수정
                 </button>
-                <button class="btn btn-warning" id="btn-delete" th:if="${user?.nickname == post.writer}">
+                <button class="btn btn-warning" id="btn-delete" th:if="${user?.id == post.writerId}">
                     삭제
                 </button>
             </div>
@@ -40,12 +40,12 @@
                         <span style="font-size: small" th:text="${comment.nickname}"></span>
                         <span style="font-size: xx-small" th:text="${comment.createdDate}"></span>
                     </span>
-                    <a type="button" data-toggle="collapse" th:if="${user?.nickname == comment.nickname}"
+                    <a type="button" data-toggle="collapse" th:if="${user?.id == comment.writerId}"
                        th:attr="data-target=${'.multi-collapse-' + comment.id}">수정</a>
                     <a type="button" style="color: red" id="btn-comment-delete"
                        th:postId="${post.id}"
                        th:commentId="${comment.id}"
-                       th:if="${user?.nickname == comment.nickname}"
+                       th:if="${user?.id == comment.writerId}"
                        th:onclick="main.commentDelete(this.getAttribute('postId'), this.getAttribute('commentId'))">삭제</a>
                     <p th:classappend="|multi-collapse-${comment.id}|" class="collapse show"
                        th:text="${comment.content}"></p>

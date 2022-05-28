@@ -26,6 +26,7 @@ public class CommentResponseDto {
     private Long id;
     private String content;
     private String nickname;
+    private Long writerId;
     private String createdDate;
 
     public static CommentResponseDto fromEntity(Comment comment) {
@@ -33,6 +34,7 @@ public class CommentResponseDto {
                 comment.getId(),
                 comment.getContent(),
                 comment.getUser().getNickname(),
+                comment.getUser().getId(),
                 calcCreateDate(comment.getCreatedDate())
         );
     }

@@ -21,6 +21,7 @@ import java.util.List;
 public class PostReadDto {
 
     private Long id;
+    private Long writerId;
     private String title;
     private String content;
     private String writer;
@@ -31,6 +32,7 @@ public class PostReadDto {
     public static PostReadDto fromEntity(Post post, List<CommentResponseDto> comments) {
         return new PostReadDto(
                 post.getId(),
+                post.getUser().getId(),
                 post.getTitle(),
                 post.getContent(),
                 post.getWriter(),

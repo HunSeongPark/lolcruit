@@ -12,6 +12,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class SessionUser {
+    private Long id;
     private String username;
     private String password;
     private String nickname;
@@ -20,6 +21,7 @@ public class SessionUser {
 
     public static SessionUser fromEntity(User user) {
          return new SessionUser(
+                 user.getId(),
                  user.getUsername(),
                  user.getPassword(),
                  user.getNickname(),
