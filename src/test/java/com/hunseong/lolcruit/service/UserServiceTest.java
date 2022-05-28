@@ -45,7 +45,7 @@ class UserServiceTest {
 
         // then
         boolean hasNickname = userService.hasNickname(joinRequestDto.getNickname());
-        boolean hasEmail = userService.hasEmail(joinRequestDto.getEmail());
+        boolean hasEmail = userService.hasEmail(joinRequestDto.getEmail(), null);
         boolean hasUsername = userService.hasUsername(joinRequestDto.getUsername());
         User user = userRepository.findByUsername(joinRequestDto.getUsername())
                         .get();

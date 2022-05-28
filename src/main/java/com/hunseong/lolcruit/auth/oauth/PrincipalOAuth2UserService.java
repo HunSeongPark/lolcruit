@@ -74,13 +74,13 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
 
             // 일반 계정이면 SNS 통합
             if (user.getProvider() == null) {
-                user.oAuthIntegrate(provider, providerId);
+                user.oAuthIntegrate(provider, providerId, password);
                 userRepository.save(user);
-                throw new OAuthInfoException(OAuthInfoCode.SNS_INTEGRATED);
+                httpSession.setAttribute("oauthInfo", OAuthInfoCode.SNS_INTEGRATED);
             } else {
                 // 다른 SNS 계정일 때
                 if (!user.getProvider().equals(provider)) {
-                    throw new OAuthInfoException(OAuthInfoCode.EXIST_ANOTHER_SNS);
+                    httpSession.setAttribute("oauthInfo", OAuthInfoCode.EXIST_ANOTHER_SNS);
                 } else {
                     // 해당 계정이 맞을 때
                     SessionUser sessionUser = SessionUser.fromEntity(user);

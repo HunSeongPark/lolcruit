@@ -63,8 +63,7 @@ public class UserController {
         }
 
         // 중복 이메일 (global error)
-        if (userService.hasEmail(joinRequestDto.getEmail())) {
-            bindingResult.reject("duplicateEmail", "이미 존재하는 이메일입니다.");
+        if (userService.hasEmail(joinRequestDto.getEmail(), bindingResult)) {
             isError = true;
         }
 

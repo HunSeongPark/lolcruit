@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import static com.hunseong.lolcruit.constants.OAuthConst.PASSWORD_SECRET;
 
@@ -39,10 +40,16 @@ public class UserService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public boolean hasEmail(String email) {
+    public boolean hasEmail(String email, BindingResult bindingResult) {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user != null) {
-            // TODO user 객체의 SNS 여부에 따른 연동 처리
+            if (user.getProvider() != null) {
+                // SNS 아이디로 가입되어 있을 시
+                bindingResult.reject("snsExist", "이미 SNS 계정으로 가입된 이메일입니다.");
+            } else {
+                // 일반 아이디로 가입되어 있을 시
+                bindingResult.reject("duplicateEmail", "이미 존재하는 이메일입니다.");
+            }
             return true;
         } else {
             return false;

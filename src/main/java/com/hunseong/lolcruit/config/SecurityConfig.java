@@ -1,5 +1,7 @@
 package com.hunseong.lolcruit.config;
 
+import com.hunseong.lolcruit.auth.CustomAuthSuccessHandler;
+import com.hunseong.lolcruit.auth.CustomOAuthSuccessHandler;
 import com.hunseong.lolcruit.domain.user.Role;
 import com.hunseong.lolcruit.auth.oauth.PrincipalOAuth2UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationFailureHandler authenticationFailureHandler;
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final CustomAuthSuccessHandler customAuthSuccessHandler;
+    private final CustomOAuthSuccessHandler customOAuthSuccessHandler;
     private final AuthenticationProvider authenticationProvider;
     private final PrincipalOAuth2UserService principalOAuth2UserService;
 
@@ -59,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/auth/login")
                 .loginProcessingUrl("/auth/loginProc")
                 .failureHandler(authenticationFailureHandler)
-                .successHandler(authenticationSuccessHandler)
+                .successHandler(customAuthSuccessHandler)
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
@@ -68,7 +71,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login()
                 .loginPage("/")
+                .successHandler(customOAuthSuccessHandler)
                 .userInfoEndpoint()
                 .userService(principalOAuth2UserService); // 로그인 완료 후 코드가 아닌 액세스 토큰 + 사용자 프로필 정보를 받음.
+
     }
 }

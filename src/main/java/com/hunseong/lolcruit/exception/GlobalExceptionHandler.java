@@ -16,11 +16,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public String handleCustomException(CustomException e, Model model) {
-        log.error("[Occur CustomException] - {}", e.getErrorCode().getDetail());
+        log.error("[Occur CustomException] - {}", e.getMessage());
 
         model.addAttribute("code", e.getErrorCode().getHttpStatus().value());
-        model.addAttribute("message", e.getErrorCode().getDetail());
+        model.addAttribute("message", e.getMessage());
         return "error/error";
+    }
+
+    @ExceptionHandler
+    public String handleOAuthInfo(OAuthInfoException e, Model model) {
+        log.info("[OAuth Information] - {}", e.getMessage());
+        model.addAttribute("message", e.getMessage());
+        return "oauth/oauthInfo";
     }
 
     @ExceptionHandler

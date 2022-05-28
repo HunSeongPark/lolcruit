@@ -4,6 +4,8 @@ import com.hunseong.lolcruit.auth.LoginUser;
 import com.hunseong.lolcruit.domain.post.Position;
 import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.exception.ErrorCode;
+import com.hunseong.lolcruit.exception.OAuthInfoCode;
+import com.hunseong.lolcruit.exception.OAuthInfoException;
 import com.hunseong.lolcruit.service.PostService;
 import com.hunseong.lolcruit.web.dto.post.PostEditDto;
 import com.hunseong.lolcruit.web.dto.post.PostIndexResponseDto;
@@ -19,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.hunseong.lolcruit.constants.PagingConst.BLOCK_PAGE_COUNT;
 
@@ -38,12 +42,21 @@ public class PostController {
             @RequestParam(value = "keyword", required = false) String keyword,
             @LoginUser SessionUser user,
             Pageable pageable,
-            Model model
+            Model model,
+            HttpServletRequest request
     ) {
+
+        OAuthInfoCode oauthInfo = (OAuthInfoCode) request.getSession().getAttribute("oauthInfo");
+
+        if (oauthInfo != null) {
+            request.getSession().removeAttribute("oauthInfo");
+            throw new OAuthInfoException(oauthInfo);
+        }
 
         if (user != null) {
             model.addAttribute("user", user);
         }
+
         Page<PostIndexResponseDto> posts = postService.findAll(pageable, position, keyword);
 
         // 임의로 URL을 조작하여 페이지 범위를 벗어나는 index에 접근할 경우 throw

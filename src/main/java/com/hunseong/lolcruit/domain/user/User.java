@@ -58,8 +58,9 @@ public class User extends BaseTimeEntity {
         this.password = password;
     }
 
-    public void oAuthIntegrate(String provider, String providerId) {
+    public void oAuthIntegrate(String provider, String providerId, String password) {
         this.provider = provider;
         this.providerId = providerId;
+        this.password = password;
     }
 }
