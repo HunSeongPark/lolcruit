@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import static com.hunseong.lolcruit.constants.PagingConst.BLOCK_PAGE_COUNT;
 
@@ -46,10 +47,11 @@ public class PostController {
             HttpServletRequest request
     ) {
 
-        OAuthInfoCode oauthInfo = (OAuthInfoCode) request.getSession().getAttribute("oauthInfo");
+        HttpSession session = request.getSession();
+        OAuthInfoCode oauthInfo = (OAuthInfoCode) session.getAttribute("oauthInfo");
 
         if (oauthInfo != null) {
-            request.getSession().removeAttribute("oauthInfo");
+            session.removeAttribute("oauthInfo");
             throw new OAuthInfoException(oauthInfo);
         }
 
