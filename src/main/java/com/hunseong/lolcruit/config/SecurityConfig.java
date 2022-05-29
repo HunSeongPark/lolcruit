@@ -71,6 +71,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/")
                 .userInfoEndpoint()
                 .userService(principalOAuth2UserService); // 로그인 완료 후 코드가 아닌 액세스 토큰 + 사용자 프로필 정보를 받음.
-
     }
 }
