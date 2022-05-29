@@ -1,5 +1,6 @@
 package com.hunseong.lolcruit.service;
 
+import com.hunseong.lolcruit.constants.EmailValidationResult;
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
@@ -45,13 +46,13 @@ class UserServiceTest {
 
         // then
         boolean hasNickname = userService.hasNickname(joinRequestDto.getNickname());
-        boolean hasEmail = userService.hasEmail(joinRequestDto.getEmail(), null);
+        int hasEmail = userService.hasEmail(joinRequestDto.getEmail());
         boolean hasUsername = userService.hasUsername(joinRequestDto.getUsername());
         User user = userRepository.findByUsername(joinRequestDto.getUsername())
                         .get();
 
         assertThat(hasNickname).isTrue();
-        assertThat(hasEmail).isTrue();
+        assertThat(hasEmail).isEqualTo(EmailValidationResult.IS_EXIST_EMAIL);
         assertThat(hasUsername).isTrue();
         assertThat(user.getUsername()).isEqualTo(joinRequestDto.getUsername());
         assertThat(user.getNickname()).isEqualTo(joinRequestDto.getNickname());
