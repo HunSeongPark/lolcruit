@@ -116,7 +116,7 @@ Logo designed by 이량([@2ryangg](https://www.instagram.com/2ryangg))
   - 작성 날짜 오늘이 아닐 경우 “yy.MM.dd” format 적용
   - 본인이 작성한 댓글만 수정 / 삭제 가능
 
-## 기록 (추후 블로그 정리 후 링크)
+## 새롭게 알게된 점 (추후 블로그 정리 후 링크)
 - SuccessHandler 권한 없는 페이지 접근 / 직접 로그인 경로 요청 / else에 대한 이전 페이지 이동
 - (Spring Security) 회원 정보 수정 - UsernamePasswordAuthenticationToken의 password Parameter에 인코딩 된 비밀번호를 넣으면 안되고, 원본 비밀번호 넣기
 ```java
