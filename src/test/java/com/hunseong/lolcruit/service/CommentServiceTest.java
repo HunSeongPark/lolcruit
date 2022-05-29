@@ -55,9 +55,9 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -80,10 +80,10 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
-        SessionUser newUser = new SessionUser("user1", "12", "user1", "user1@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
+        SessionUser newUser = new SessionUser(3L, "new", "12", "new", "new@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -102,9 +102,9 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -123,9 +123,9 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -148,10 +148,10 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
-        SessionUser newUser = new SessionUser("new", "12", "new", "new@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
+        SessionUser newUser = new SessionUser(3L, "new", "12", "new", "new@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -173,9 +173,9 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -197,9 +197,9 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -221,14 +221,14 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         JoinRequestDto joinRequestDto2 = new JoinRequestDto("new", "12", "new", "new@user.com");
-        userService.join(joinRequestDto2);
+        Long savedUserId2 = userService.join(joinRequestDto2);
 
-        SessionUser newUser = new SessionUser("new", "12", "new", "new@user.com", Role.USER);
+        SessionUser newUser = new SessionUser(savedUserId2, "new", "12", "new", "new@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -250,9 +250,9 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -279,10 +279,10 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
-        SessionUser newUser = new SessionUser("new", "12", "new", "new@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
+        SessionUser newUser = new SessionUser(3L, "new", "12", "new", "new@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -306,9 +306,9 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -331,9 +331,9 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -356,14 +356,14 @@ class CommentServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("user", "12", "user", "user@user.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
-        SessionUser sessionUser = new SessionUser("user", "12", "user", "user@user.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "user", "12", "user", "user@user.com", Role.USER, null);
 
         JoinRequestDto joinRequestDto2 = new JoinRequestDto("new", "12", "new", "new@user.com");
-        userService.join(joinRequestDto2);
+        Long savedUserId2 = userService.join(joinRequestDto2);
 
-        SessionUser newUser = new SessionUser("new", "12", "new", "new@user.com", Role.USER);
+        SessionUser newUser = new SessionUser(savedUserId2,"new", "12", "new", "new@user.com", Role.USER,null);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "cont", "user", Position.TOP);
         Long postId = postService.add(postRequestDto, sessionUser);

@@ -127,11 +127,11 @@ class PostServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
-        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER, null);
 
         // when
         Long postId = postService.add(postRequestDto, sessionUser);
@@ -149,7 +149,7 @@ class PostServiceTest {
 
         // given
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
-        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(3L, "hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER, null);
 
         // when & then
         CustomException customException = assertThrows(CustomException.class,
