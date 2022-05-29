@@ -2,6 +2,7 @@ package com.hunseong.lolcruit.auth.oauth;
 
 import com.hunseong.lolcruit.auth.PrincipalUserDetails;
 import com.hunseong.lolcruit.auth.oauth.provider.GoogleUserInfo;
+import com.hunseong.lolcruit.auth.oauth.provider.NaverUserInfo;
 import com.hunseong.lolcruit.auth.oauth.provider.OAuthUserInfo;
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
@@ -43,6 +44,9 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
         // 구글 로그인
         if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             userInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")){
+            // 네이버 로그인
+            userInfo = new NaverUserInfo(oAuth2User.getAttribute("response"));
         } else {
             throw new CustomException(ErrorCode.USER_BAD_REQUEST);
         }
