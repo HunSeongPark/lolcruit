@@ -1,5 +1,6 @@
 package com.hunseong.lolcruit.service;
 
+import com.hunseong.lolcruit.constants.EmailValidationResult;
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
 import com.hunseong.lolcruit.exception.CustomException;
@@ -16,8 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 
+import static com.hunseong.lolcruit.constants.EmailValidationResult.*;
 import static com.hunseong.lolcruit.constants.OAuthConst.PASSWORD_SECRET;
 
 /**
@@ -40,20 +41,23 @@ public class UserService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public boolean hasEmail(String email, BindingResult bindingResult) {
+    public int hasEmail(String email) {
+
         User user = userRepository.findByEmail(email).orElse(null);
         if (user != null) {
             if (user.getProvider() != null) {
                 // SNS 아이디로 가입되어 있을 시
-                bindingResult.reject("snsExist", "이미 SNS 계정으로 가입된 이메일입니다.");
+//                bindingResult.reject("snsExist", "이미 SNS 계정으로 가입된 이메일입니다.");
+                return IS_EXIST_SNS;
             } else {
                 // 일반 아이디로 가입되어 있을 시
-                bindingResult.reject("duplicateEmail", "이미 존재하는 이메일입니다.");
+//                bindingResult.reject("duplicateEmail", "이미 존재하는 이메일입니다.");
+                return IS_EXIST_EMAIL;
             }
-            return true;
-        } else {
-            return false;
         }
+
+        // 가입되어 있지 않을 시
+        return OK;
     }
 
     @Transactional

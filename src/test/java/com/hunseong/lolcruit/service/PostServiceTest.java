@@ -174,18 +174,16 @@ class PostServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
-        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER, null);
 
         Long postId = postService.add(postRequestDto, sessionUser);
 
-        SessionUser user = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
-
         // when
-        PostEditDto result = postService.findByIdForEdit(postId, user);
+        PostEditDto result = postService.findByIdForEdit(postId, sessionUser);
 
         // then
         assertThat(result.getId()).isEqualTo(postId);
@@ -198,18 +196,18 @@ class PostServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
         JoinRequestDto joinRequestDto2 = new JoinRequestDto("new", "1234", "new", "new@naver.com");
-        userService.join(joinRequestDto2);
+        Long savedUserId2 = userService.join(joinRequestDto2);
 
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
-        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId,"hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER, null);
 
         Long postId = postService.add(postRequestDto, sessionUser);
 
-        SessionUser newUser = new SessionUser("new", "1234", "new", "new@naver.com", Role.USER);
+        SessionUser newUser = new SessionUser(savedUserId2, "new", "1234", "new", "new@naver.com", Role.USER, null);
 
         // when & then
         CustomException customException = assertThrows(CustomException.class,
@@ -223,10 +221,10 @@ class PostServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
-        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER, null);
 
         Long postId = postService.add(postRequestDto, sessionUser);
 
@@ -250,10 +248,10 @@ class PostServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
-        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER, null);
 
         Long postId = postService.add(postRequestDto, sessionUser);
 
@@ -272,14 +270,14 @@ class PostServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
-        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER, null);
 
         Long postId = postService.add(postRequestDto, sessionUser);
 
-        SessionUser newUser = new SessionUser("new", "1234", "new", "new@naver.com", Role.USER);
+        SessionUser newUser = new SessionUser(3L, "new", "1234", "new", "new@naver.com", Role.USER, null);
 
         // when & then
         CustomException customException = assertThrows(CustomException.class,
@@ -293,17 +291,17 @@ class PostServiceTest {
 
         // given
         JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
-        userService.join(joinRequestDto);
+        Long savedUserId = userService.join(joinRequestDto);
 
         JoinRequestDto joinRequestDto2 = new JoinRequestDto("new", "1234", "new", "new@naver.com");
-        userService.join(joinRequestDto2);
+        Long savedUserId2 = userService.join(joinRequestDto2);
 
         PostRequestDto postRequestDto = new PostRequestDto("title", "content", "hunseong", Position.MID);
-        SessionUser sessionUser = new SessionUser("hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER);
+        SessionUser sessionUser = new SessionUser(savedUserId, "hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER ,null);
 
         Long postId = postService.add(postRequestDto, sessionUser);
 
-        SessionUser newUser = new SessionUser("new", "1234", "new", "new@naver.com", Role.USER);
+        SessionUser newUser = new SessionUser(savedUserId2, "new", "1234", "new", "new@naver.com", Role.USER, null);
 
         // when & then
         CustomException customException = assertThrows(CustomException.class,

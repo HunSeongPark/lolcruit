@@ -2,6 +2,7 @@ package com.hunseong.lolcruit.web;
 
 import com.hunseong.lolcruit.auth.LoginErrorCode;
 import com.hunseong.lolcruit.auth.LoginUser;
+import com.hunseong.lolcruit.constants.EmailValidationResult;
 import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.service.UserService;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+
+import static com.hunseong.lolcruit.constants.EmailValidationResult.*;
 
 /**
  * Created by Hunseong on 2022/05/23
@@ -62,8 +65,17 @@ public class UserController {
             isError = true;
         }
 
-        // 중복 이메일 (global error)
-        if (userService.hasEmail(joinRequestDto.getEmail(), bindingResult)) {
+        int hasEmail = userService.hasEmail(joinRequestDto.getEmail());
+
+        // 중복 이메일 - SNS 계정 가입 (global error)
+        if (hasEmail == IS_EXIST_SNS) {
+            bindingResult.reject("snsExist", "이미 SNS 계정으로 가입된 이메일입니다.");
+            isError = true;
+        }
+
+        // 중복 이메일 - 일반 계정 가입 (global error)
+        if (hasEmail == IS_EXIST_EMAIL) {
+            bindingResult.reject("snsExist", "이미 SNS 계정으로 가입된 이메일입니다.");
             isError = true;
         }
 
