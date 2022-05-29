@@ -1,9 +1,12 @@
 package com.hunseong.lolcruit.service;
 
 import com.hunseong.lolcruit.constants.EmailValidationResult;
+import com.hunseong.lolcruit.domain.user.Role;
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
+import com.hunseong.lolcruit.web.dto.user.EditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
+import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -56,5 +59,25 @@ class UserServiceTest {
         assertThat(hasUsername).isTrue();
         assertThat(user.getUsername()).isEqualTo(joinRequestDto.getUsername());
         assertThat(user.getNickname()).isEqualTo(joinRequestDto.getNickname());
+    }
+
+    @DisplayName("회원정보 수정에 성공한다")
+    @Test
+    void edit() {
+
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("hunseong", "1234", "hunseong", "gnstjd@naver.com");
+        Long savedUserId = userService.join(joinRequestDto);
+
+        SessionUser user = new SessionUser(savedUserId, "hunseong", "1234", "hunseong", "gnstjd@naver.com", Role.USER, null);
+
+        EditRequestDto editRequestDto = new EditRequestDto("1234", "new");
+
+        // when
+        userService.edit(editRequestDto, user);
+
+        // then
+        User findUser = userRepository.findById(savedUserId).get();
+        assertThat(findUser.getNickname()).isEqualTo(editRequestDto.getNickname());
     }
 }
