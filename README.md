@@ -3,7 +3,7 @@
 ![logo](https://user-images.githubusercontent.com/71416677/169736957-bb11e1d4-397c-4a0e-9103-5d1235fcdcfb.jpeg)                   
 Logo designed by 이량([@2ryangg](https://www.instagram.com/2ryangg))                        
                   
-- Notion - [lolcruit]()      
+- Notion - [lolcruit](https://wry-tornado-794.notion.site/lolcruit-90c9dcff58984620b3acf79025fde871)      
 
 ## Details
 게시글 목록                            
