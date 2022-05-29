@@ -47,11 +47,9 @@ public class UserService {
         if (user != null) {
             if (user.getProvider() != null) {
                 // SNS 아이디로 가입되어 있을 시
-//                bindingResult.reject("snsExist", "이미 SNS 계정으로 가입된 이메일입니다.");
                 return IS_EXIST_SNS;
             } else {
                 // 일반 아이디로 가입되어 있을 시
-//                bindingResult.reject("duplicateEmail", "이미 존재하는 이메일입니다.");
                 return IS_EXIST_EMAIL;
             }
         }

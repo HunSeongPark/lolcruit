@@ -75,7 +75,7 @@ public class UserController {
 
         // 중복 이메일 - 일반 계정 가입 (global error)
         if (hasEmail == IS_EXIST_EMAIL) {
-            bindingResult.reject("snsExist", "이미 SNS 계정으로 가입된 이메일입니다.");
+            bindingResult.reject("duplicateEmail", "이미 존재하는 이메일입니다.");
             isError = true;
         }
 
