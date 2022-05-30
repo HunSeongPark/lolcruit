@@ -138,5 +138,5 @@ Logo designed by 이량([@2ryangg](https://www.instagram.com/2ryangg))
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 ```
-- (Spring Security) username만 매칭되면 user 세션 생성되던 문제 해결 - AuthenticationProvider implements하여 password 기반 인증 + 성공 시 세션에 user 정보 저장
+- [username만 매칭되면 user 세션 생성 되는 문제 해결 - AuthenticationProvider를 통한 password 기반 인증](https://hungseong.tistory.com/61)
 - (Spring Security) OAuth2UserService(session에 oauthInfo 저장) -> indexPage("/")에서 session.getAttributes("oauthInfo") 통해 안내 페이지 이동 
