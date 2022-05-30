@@ -118,7 +118,7 @@ Logo designed by 이량([@2ryangg](https://www.instagram.com/2ryangg))
 
 ## 새롭게 알게된 점 (추후 블로그 정리 후 링크)
 - [로그인 성공 시 이전 페이지로 이동 - Referer 헤더와 AuthenticationSuccessHandler extends](https://hungseong.tistory.com/60)
-- (Spring Security) 회원 정보 수정 - UsernamePasswordAuthenticationToken의 password Parameter에 인코딩 된 비밀번호를 넣으면 안되고, 원본 비밀번호 넣기
+- [username만 매칭되면 user 세션 생성 되는 문제 해결 - AuthenticationProvider를 통한 password 기반 인증](https://hungseong.tistory.com/61)
 ```java
 @Transactional
     public void edit(EditRequestDto editRequestDto, SessionUser sessionUser) {
