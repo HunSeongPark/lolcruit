@@ -126,10 +126,12 @@ Logo designed by 이량([@2ryangg](https://www.instagram.com/2ryangg))
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         String encodePw = passwordEncoder.encode(editRequestDto.getPassword());
+        // !!! User Entity에는 Encoding 된 비밀번호를 넣지만 !!!
         user.update(editRequestDto.getNickname(), encodePw);
 
         // Security 세션 변경 처리
         Authentication authentication = authenticationManager.authenticate(
+        // !!! UsernamePasswordAuthenticationToken의 파라미터로는 원본 비밀번호를 넣는다 !!!
                 new UsernamePasswordAuthenticationToken(
                         user.getUsername(), editRequestDto.getPassword())
         );
