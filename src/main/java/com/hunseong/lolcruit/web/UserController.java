@@ -2,7 +2,6 @@ package com.hunseong.lolcruit.web;
 
 import com.hunseong.lolcruit.auth.LoginErrorCode;
 import com.hunseong.lolcruit.auth.LoginUser;
-import com.hunseong.lolcruit.constants.EmailValidationResult;
 import com.hunseong.lolcruit.exception.CustomException;
 import com.hunseong.lolcruit.exception.ErrorCode;
 import com.hunseong.lolcruit.service.UserService;
@@ -12,10 +11,6 @@ import com.hunseong.lolcruit.web.dto.user.OAuthEditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-import static com.hunseong.lolcruit.constants.EmailValidationResult.*;
+import static com.hunseong.lolcruit.constants.EmailValidationResult.IS_EXIST_EMAIL;
+import static com.hunseong.lolcruit.constants.EmailValidationResult.IS_EXIST_SNS;
 
 /**
  * Created by Hunseong on 2022/05/23
@@ -112,7 +108,7 @@ public class UserController {
          */
         String uri = request.getHeader("Referer");
         if (uri != null && !uri.contains("/login")) {
-            request.getSession().setAttribute("prevPage", request.getHeader("Referer"));
+            request.getSession().setAttribute("prevPage", uri);
         }
         return "auth/loginForm";
     }
@@ -136,7 +132,7 @@ public class UserController {
             @Validated @ModelAttribute("user") EditRequestDto editRequestDto,
             BindingResult bindingResult,
             Model model
-            ) {
+    ) {
 
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
