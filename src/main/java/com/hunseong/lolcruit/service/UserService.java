@@ -1,6 +1,5 @@
 package com.hunseong.lolcruit.service;
 
-import com.hunseong.lolcruit.constants.EmailValidationResult;
 import com.hunseong.lolcruit.domain.user.User;
 import com.hunseong.lolcruit.domain.user.UserRepository;
 import com.hunseong.lolcruit.exception.CustomException;

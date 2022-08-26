@@ -1,8 +1,7 @@
 package com.hunseong.lolcruit.config;
 
-import com.hunseong.lolcruit.auth.CustomAuthSuccessHandler;
-import com.hunseong.lolcruit.domain.user.Role;
 import com.hunseong.lolcruit.auth.oauth.PrincipalOAuth2UserService;
+import com.hunseong.lolcruit.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
