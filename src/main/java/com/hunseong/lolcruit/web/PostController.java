@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static com.hunseong.lolcruit.constants.PagingConst.BLOCK_PAGE_COUNT;
+import static com.hunseong.lolcruit.constants.PagingConst.*;
 
 /**
  * Created by Hunseong on 2022/05/19

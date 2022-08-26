@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.hunseong.lolcruit.constants.EmailValidationResult.*;
-import static com.hunseong.lolcruit.constants.OAuthConst.PASSWORD_SECRET;
+import static com.hunseong.lolcruit.constants.OAuthConst.*;
 
 /**
  * Created by Hunseong on 2022/05/23

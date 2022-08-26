@@ -8,20 +8,13 @@ import com.hunseong.lolcruit.web.dto.user.EditRequestDto;
 import com.hunseong.lolcruit.web.dto.user.JoinRequestDto;
 import com.hunseong.lolcruit.web.dto.user.SessionUser;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Hunseong on 2022/05/26
@@ -52,7 +45,7 @@ class UserServiceTest {
         int hasEmail = userService.hasEmail(joinRequestDto.getEmail());
         boolean hasUsername = userService.hasUsername(joinRequestDto.getUsername());
         User user = userRepository.findByUsername(joinRequestDto.getUsername())
-                        .get();
+                .get();
 
         assertThat(hasNickname).isTrue();
         assertThat(hasEmail).isEqualTo(EmailValidationResult.IS_EXIST_EMAIL);

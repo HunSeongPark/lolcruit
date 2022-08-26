@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
-import static com.hunseong.lolcruit.constants.OAuthConst.PASSWORD_SECRET;
+import static com.hunseong.lolcruit.constants.OAuthConst.*;
 
 /**
  * Created by Hunseong on 2022/05/28

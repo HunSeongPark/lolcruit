@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-import static com.hunseong.lolcruit.constants.EmailValidationResult.IS_EXIST_EMAIL;
-import static com.hunseong.lolcruit.constants.EmailValidationResult.IS_EXIST_SNS;
+import static com.hunseong.lolcruit.constants.EmailValidationResult.*;
 
 /**
  * Created by Hunseong on 2022/05/23
