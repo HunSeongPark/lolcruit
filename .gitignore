@@ -38,4 +38,3 @@ out/
 
 ### oauth ###
 application-oauth.yml
-OAuthConst.java
